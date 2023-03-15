@@ -5,28 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c1badd49-50dc-43a1-b9d6-3dcda857c9b7" name="Changes" comment="task 2">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/src/main/java/ru/tinkoff/edu/java/bot/BotApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/src/main/java/ru/tinkoff/edu/java/bot/configuration/ApplicationConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot/src/main/resources/application.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/link-parser/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/link-parser/src/main/java/ru/tinkoff/edu/java/parser/data/GitHubLinkData.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/link-parser/src/main/java/ru/tinkoff/edu/java/parser/data/LinkData.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/link-parser/src/main/java/ru/tinkoff/edu/java/parser/data/StackOverflowLinkData.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/link-parser/src/main/java/ru/tinkoff/edu/java/parser/handler/GitHubLinkHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/link-parser/src/main/java/ru/tinkoff/edu/java/parser/handler/LinkHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/link-parser/src/main/java/ru/tinkoff/edu/java/parser/handler/StackOverflowLinkHandler.java" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/link-parser/src/main/java/ru/tinkoff/edu/java/parser/handler/MainLinkHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link-parser/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/link-parser/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link-parser/src/main/java/ru/tinkoff/edu/java/parser/handler/GitHubLinkHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/link-parser/src/main/java/ru/tinkoff/edu/java/parser/handler/GitHubLinkHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link-parser/src/main/java/ru/tinkoff/edu/java/parser/handler/LinkHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/link-parser/src/main/java/ru/tinkoff/edu/java/parser/handler/LinkHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/link-parser/src/main/java/ru/tinkoff/edu/java/parser/handler/StackOverflowLinkHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/link-parser/src/main/java/ru/tinkoff/edu/java/parser/handler/StackOverflowLinkHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/link-parser/src/test/java/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scrapper/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scrapper/src/main/java/ru/tinkoff/edu/java/scrapper/ScrapperApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scrapper/src/main/java/ru/tinkoff/edu/java/scrapper/configuration/ApplicationConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scrapper/src/main/resources/application.yml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,23 +51,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "jdk.selected.JAVA_MODULE": "17",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "spring.configuration.checksum": "8b85a66bfd3677e0e244a9bd124f866f",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/wieceslaw/IdeaProjects/tinkoff-algo&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;8b85a66bfd3677e0e244a9bd124f866f&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RunManager">
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="ru.tinkoff.edu.java.parser.handler" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.MainLinkHandler">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="link-parser" />
@@ -89,8 +81,29 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="MainLinkHandler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ru.tinkoff.edu.java.parser.handler.MainLinkHandler" />
+      <module name="link-parser" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.tinkoff.edu.java.parser.handler.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ScrapperApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="scrapper" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="ru.tinkoff.edu.java.scrapper.ScrapperApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.MainLinkHandler" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
@@ -104,7 +117,9 @@
       <option name="presentableId" value="Default" />
       <updated>1678262954415</updated>
       <workItem from="1678262956331" duration="17103000" />
-      <workItem from="1678364400776" duration="173000" />
+      <workItem from="1678364400776" duration="756000" />
+      <workItem from="1678384076897" duration="24000" />
+      <workItem from="1678891895310" duration="4825000" />
     </task>
     <task id="LOCAL-00001" summary="task 2">
       <created>1678281871120</created>
