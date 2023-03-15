@@ -1,6 +1,5 @@
 package ru.tinkoff.edu.java.parser.handler;
 
-import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.tinkoff.edu.java.parser.data.GitHubLinkData;
@@ -11,9 +10,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-@AllArgsConstructor
 public class MainLinkHandler implements LinkHandler {
-    private List<LinkHandler> handlers;
+    private final List<LinkHandler> handlers;
+
+    public MainLinkHandler() {
+        this.handlers = Arrays.asList(
+                new GitHubLinkHandler(),
+                new StackOverflowLinkHandler()
+        );
+    }
 
     @Override
     public @Nullable LinkData handleLink(@NotNull String link) {
@@ -25,10 +30,7 @@ public class MainLinkHandler implements LinkHandler {
     }
 
     public static void main(String[] args) {
-        MainLinkHandler mainLinkHandler = new MainLinkHandler(Arrays.asList(
-                new GitHubLinkHandler(),
-                new StackOverflowLinkHandler()
-        ));
+        MainLinkHandler mainLinkHandler = new MainLinkHandler();
         String link = "https://github.com/Wieceslaw/tinkoff-project/";
         LinkData linkData = mainLinkHandler.handleLink(link);
         if (linkData instanceof GitHubLinkData gitHubLinkData) {
