@@ -11,10 +11,11 @@ import ru.tinkoff.edu.java.scrapper.dto.RemoveLinkRequest;
 import java.util.ArrayList;
 
 @Validated
+@RequestMapping("/links")
 @RestController
 public class LinksController {
     @PostMapping(
-            path = "/links/{id}",
+            path = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -26,7 +27,7 @@ public class LinksController {
 
 
     @GetMapping(
-            path = "/links/{id}",
+            path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ListLinksResponse getAll(@PathVariable("id") Long id) {
@@ -35,7 +36,7 @@ public class LinksController {
     }
 
     @DeleteMapping(
-            path = "/links/{id}",
+            path = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
