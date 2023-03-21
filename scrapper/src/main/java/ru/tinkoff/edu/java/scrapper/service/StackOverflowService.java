@@ -5,6 +5,11 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import ru.tinkoff.edu.java.scrapper.client.stackoverflow.StackOverflowWebClient;
 import ru.tinkoff.edu.java.scrapper.client.stackoverflow.dto.StackOverflowQuestionResponse;
+import ru.tinkoff.edu.java.scrapper.client.stackoverflow.dto.StackOverflowQuestionsResponse;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -12,8 +17,18 @@ public class StackOverflowService {
     private final StackOverflowWebClient stackOverflowWebClient;
 
     public Mono<StackOverflowQuestionResponse> fetchQuestion(Integer id) {
-        // TODO: implement fetching single/multiple questions
-        return stackOverflowWebClient.fetchQuestion(id)
+        return stackOverflowWebClient
+                .fetchQuestion(id)
                 .map(item -> item.items().get(0));
+    }
+
+    public Mono<List<StackOverflowQuestionResponse>> fetchQuestions(List<Integer> ids) {
+        String idss = ids
+                .stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(";"));
+        return stackOverflowWebClient
+                .fetchQuestions(idss)
+                .map(StackOverflowQuestionsResponse::items);
     }
 }

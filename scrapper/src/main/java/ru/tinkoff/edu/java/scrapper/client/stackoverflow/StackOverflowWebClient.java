@@ -7,6 +7,7 @@ import org.springframework.web.service.annotation.HttpExchange;
 import reactor.core.publisher.Mono;
 import ru.tinkoff.edu.java.scrapper.client.stackoverflow.dto.StackOverflowQuestionsResponse;
 
+
 @HttpExchange(
         accept = MediaType.APPLICATION_JSON_VALUE,
         contentType = MediaType.APPLICATION_JSON_VALUE
@@ -14,4 +15,7 @@ import ru.tinkoff.edu.java.scrapper.client.stackoverflow.dto.StackOverflowQuesti
 public interface StackOverflowWebClient {
     @GetExchange("/questions/{id}?site=stackoverflow")
     Mono<StackOverflowQuestionsResponse> fetchQuestion(@PathVariable("id") Integer id);
+
+    @GetExchange("/questions/{ids}?site=stackoverflow")
+    Mono<StackOverflowQuestionsResponse> fetchQuestions(@PathVariable("ids") String ids);
 }

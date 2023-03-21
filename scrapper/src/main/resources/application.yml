@@ -1,4 +1,3 @@
-app.test: 42
 springdoc:
   swagger-ui:
     path: "swagger-ui"
@@ -7,12 +6,11 @@ management:
   server:
     port: 8080
 
-github:
-  url: "https://api.github.com"
-
-stackoverflow:
-  url: "https://api.stackexchange.com/2.3"
-
 app:
+  test: 42
   scheduler:
     interval: 10000
+  github:
+    url: "https://api.github.com"
+  stackoverflow:
+    url: "https://api.stackexchange.com/2.3"

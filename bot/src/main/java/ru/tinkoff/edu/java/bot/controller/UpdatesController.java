@@ -14,5 +14,7 @@ public class UpdatesController {
             path = "/updates",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public void sendUpdates(@RequestBody LinkUpdateRequest request) {}
+    public void sendUpdates(@RequestBody LinkUpdateRequest request) {
+        // TODO: implement
+    }
 }

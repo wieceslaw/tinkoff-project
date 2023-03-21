@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.Duration;
+
 
 @EnableScheduling
 @Validated
@@ -16,6 +18,29 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
 @Configuration
 public class ApplicationConfig {
-    @NotNull String test;
-    @NotNull Scheduler scheduler;
+    @NotNull private String test;
+    @NotNull private Scheduler scheduler;
+    @NotNull private GitHub gitHub;
+    @NotNull private StackOverflow stackOverflow;
+
+    @Validated
+    @Getter
+    @Setter
+    public static class Scheduler {
+        @NotNull private Duration interval;
+    }
+
+    @Validated
+    @Getter
+    @Setter
+    public static class GitHub {
+        @NotNull private String url = "https://api.github.com";
+    }
+
+    @Validated
+    @Getter
+    @Setter
+    public static class StackOverflow {
+        @NotNull private String url = "https://stackoverflow.com/2.3";
+    }
 }

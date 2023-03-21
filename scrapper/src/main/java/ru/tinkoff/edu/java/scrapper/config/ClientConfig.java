@@ -37,8 +37,8 @@ public class ClientConfig {
     }
 
     @Bean
-    public GitHubWebClient gitHubWebClient(GitHubProperties properties) {
-        WebClient webClient = buildWebClient(properties.getUrl(), objectMapper);
+    public GitHubWebClient gitHubWebClient(ApplicationConfig config) {
+        WebClient webClient = buildWebClient(config.getGitHub().getUrl(), objectMapper);
         HttpServiceProxyFactory httpServiceProxyFactory = HttpServiceProxyFactory
                 .builder(WebClientAdapter.forClient(webClient))
                 .build();
@@ -46,8 +46,8 @@ public class ClientConfig {
     }
 
     @Bean
-    public StackOverflowWebClient stackOverflowWebClient(StackOverflowProperties properties) {
-        WebClient webClient = buildWebClient(properties.getUrl(), objectMapper);
+    public StackOverflowWebClient stackOverflowWebClient(ApplicationConfig config) {
+        WebClient webClient = buildWebClient(config.getStackOverflow().getUrl(), objectMapper);
         HttpServiceProxyFactory httpServiceProxyFactory = HttpServiceProxyFactory
                 .builder(WebClientAdapter.forClient(webClient))
                 .build();
