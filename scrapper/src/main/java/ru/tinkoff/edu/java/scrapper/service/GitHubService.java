@@ -6,8 +6,8 @@ import reactor.core.publisher.Mono;
 import ru.tinkoff.edu.java.scrapper.client.github.GitHubWebClient;
 import ru.tinkoff.edu.java.scrapper.client.github.dto.GitHubRepositoryResponse;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class GitHubService {
     private final GitHubWebClient gitHubWebClient;
 

@@ -7,7 +7,6 @@ import ru.tinkoff.edu.java.scrapper.client.stackoverflow.StackOverflowWebClient;
 import ru.tinkoff.edu.java.scrapper.client.stackoverflow.dto.StackOverflowQuestionResponse;
 import ru.tinkoff.edu.java.scrapper.client.stackoverflow.dto.StackOverflowQuestionsResponse;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,12 +22,11 @@ public class StackOverflowService {
     }
 
     public Mono<List<StackOverflowQuestionResponse>> fetchQuestions(List<Integer> ids) {
-        String idss = ids
-                .stream()
-                .map(Object::toString)
-                .collect(Collectors.joining(";"));
         return stackOverflowWebClient
-                .fetchQuestions(idss)
+                .fetchQuestions(ids
+                        .stream()
+                        .map(Object::toString)
+                        .collect(Collectors.joining(";")))
                 .map(StackOverflowQuestionsResponse::items);
     }
 }

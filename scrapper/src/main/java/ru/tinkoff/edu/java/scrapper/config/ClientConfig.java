@@ -19,7 +19,7 @@ import ru.tinkoff.edu.java.scrapper.client.stackoverflow.StackOverflowWebClient;
 public class ClientConfig {
     private final ObjectMapper objectMapper;
 
-    private WebClient buildWebClient(String url, ObjectMapper objectMapper) {
+    private WebClient buildWebClient(String url) {
         ExchangeStrategies strategies = ExchangeStrategies
                 .builder()
                 .codecs(clientDefaultCodecsConfigurer -> {
@@ -38,7 +38,7 @@ public class ClientConfig {
 
     @Bean
     public GitHubWebClient gitHubWebClient(ApplicationConfig config) {
-        WebClient webClient = buildWebClient(config.getGitHub().getUrl(), objectMapper);
+        WebClient webClient = buildWebClient(config.getGitHub().getUrl());
         HttpServiceProxyFactory httpServiceProxyFactory = HttpServiceProxyFactory
                 .builder(WebClientAdapter.forClient(webClient))
                 .build();
@@ -47,7 +47,7 @@ public class ClientConfig {
 
     @Bean
     public StackOverflowWebClient stackOverflowWebClient(ApplicationConfig config) {
-        WebClient webClient = buildWebClient(config.getStackOverflow().getUrl(), objectMapper);
+        WebClient webClient = buildWebClient(config.getStackOverflow().getUrl());
         HttpServiceProxyFactory httpServiceProxyFactory = HttpServiceProxyFactory
                 .builder(WebClientAdapter.forClient(webClient))
                 .build();
