@@ -14,13 +14,16 @@ import java.util.Objects;
         basePackages = "ru.tinkoff.edu.java.bot.controller"
 )
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+    private final static String notImplementedResponse = "Error handler is not implemented yet";
+    private final static String notImplementedCode = "400";
+
     @ExceptionHandler
     protected ResponseEntity<ApiErrorResponse> handleNullPointerException(Exception ex) {
         // TODO: implement
         return new ResponseEntity<>(
                 new ApiErrorResponse(
-                        "Not implemented handler",
-                        "400",
+                        notImplementedResponse,
+                        notImplementedCode,
                         ex.toString(),
                         ex.getMessage(),
                         Arrays.stream(ex.getStackTrace()).map(Objects::toString).toList()
