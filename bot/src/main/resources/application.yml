@@ -1,1 +1,12 @@
-app.test: 42
+springdoc:
+  swagger-ui:
+    path: "swagger-ui"
+
+management:
+  server:
+    port: 8080
+
+app:
+  test: 42
+  bot:
+    token: ${TOKEN}
