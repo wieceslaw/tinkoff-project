@@ -16,7 +16,7 @@ import ru.tinkoff.edu.java.scrapper.client.stackoverflow.StackOverflowWebClient;
 
 @RequiredArgsConstructor
 @Configuration
-public class ClientConfig {
+public class WebClientConfig {
     private final ObjectMapper objectMapper;
 
     private WebClient buildWebClient(String url) {

@@ -8,7 +8,7 @@ import ru.tinkoff.edu.java.scrapper.client.github.dto.GitHubRepositoryResponse;
 
 @RequiredArgsConstructor
 @Service
-public class GitHubService {
+public class GitHubWebService {
     private final GitHubWebClient gitHubWebClient;
 
     public Mono<GitHubRepositoryResponse> fetchRepository(String owner, String repo) {

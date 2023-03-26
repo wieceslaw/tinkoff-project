@@ -18,29 +18,36 @@ import java.time.Duration;
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
 @Configuration
 public class ApplicationConfig {
-    @NotNull private String test;
-    @NotNull private Scheduler scheduler;
-    @NotNull private GitHub gitHub;
-    @NotNull private StackOverflow stackOverflow;
+    @NotNull
+    private String test;
+    @NotNull
+    private Scheduler scheduler;
+    @NotNull
+    private GitHub gitHub;
+    @NotNull
+    private StackOverflow stackOverflow;
 
     @Validated
     @Getter
     @Setter
     public static class Scheduler {
-        @NotNull private Duration interval;
+        @NotNull
+        private Duration interval;
     }
 
     @Validated
     @Getter
     @Setter
     public static class GitHub {
-        @NotNull private String url = "https://api.github.com";
+        @NotNull
+        private String url = "https://api.github.com";
     }
 
     @Validated
     @Getter
     @Setter
     public static class StackOverflow {
-        @NotNull private String url = "https://stackoverflow.com/2.3";
+        @NotNull
+        private String url = "https://stackoverflow.com/2.3";
     }
 }

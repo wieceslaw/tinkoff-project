@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class StackOverflowService {
+public class StackOverflowWebService {
     private final StackOverflowWebClient stackOverflowWebClient;
 
     public Mono<StackOverflowQuestionResponse> fetchQuestion(Integer id) {

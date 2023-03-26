@@ -10,3 +10,5 @@ app:
   test: 42
   bot:
     token: ${TOKEN}
+  scrapper:
+    url: "localhost"

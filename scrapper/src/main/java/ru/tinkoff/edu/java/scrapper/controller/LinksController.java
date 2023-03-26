@@ -25,7 +25,6 @@ public class LinksController {
         return new LinkResponse(1L, "cool.url.com/path");
     }
 
-
     @GetMapping(
             path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
