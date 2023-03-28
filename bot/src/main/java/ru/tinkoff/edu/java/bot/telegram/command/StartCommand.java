@@ -14,15 +14,17 @@ import ru.tinkoff.edu.java.bot.service.ScrapperWebService;
 public class StartCommand implements Command {
     private final ScrapperWebService webService;
 
+    private static final String COMMAND = "/start";
+    private static final String WELCOME_MESSAGE = "Hello!";
+
     @Override
     public SendMessage handle(@NotNull Message message) {
         webService.createChat(message.getChatId());
-        // TODO: change welcome message
-        return new SendMessage(message.getChatId().toString(), "Hello!");
+        return new SendMessage(message.getChatId().toString(), WELCOME_MESSAGE);
     }
 
     @Override
     public boolean supports(@NotNull Message message) {
-        return message.getText().trim().startsWith("/start");
+        return message.getText().trim().startsWith(COMMAND);
     }
 }

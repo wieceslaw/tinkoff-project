@@ -9,14 +9,17 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @Component
 @Order(1)
 public class HelpCommand implements PublicCommand {
+    private static final String COMMAND = "/help";
+    private static final String DESCRIPTION = "shows a list of commands";
+
     @Override
     public String command() {
-        return "/help";
+        return COMMAND;
     }
 
     @Override
     public String description() {
-        return "shows a list of commands";
+        return DESCRIPTION;
     }
 
     @Override
@@ -27,6 +30,6 @@ public class HelpCommand implements PublicCommand {
 
     @Override
     public boolean supports(@NotNull Message message) {
-        return message.getText().trim().startsWith("/help");
+        return message.getText().trim().startsWith(COMMAND);
     }
 }
