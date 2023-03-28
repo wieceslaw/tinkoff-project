@@ -1,7 +1,6 @@
 package ru.tinkoff.edu.java.bot.client;
 
-public record LinkResponse(
-        Long id,
-        String url
-) {
+import java.net.URI;
+
+public record LinkResponse(Long id, URI link) {
 }

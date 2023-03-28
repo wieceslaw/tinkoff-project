@@ -8,6 +8,7 @@ import ru.tinkoff.edu.java.scrapper.controller.dto.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.controller.dto.ListLinksResponse;
 import ru.tinkoff.edu.java.scrapper.controller.dto.RemoveLinkRequest;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 @Validated
@@ -22,7 +23,7 @@ public class LinksController {
     public LinkResponse create(@PathVariable("id") Long id,
                                @RequestBody AddLinkRequest request) {
         // TODO: implement
-        return new LinkResponse(1L, "cool.url.com/path");
+        return new LinkResponse(1L, URI.create("cool.url.com/path"));
     }
 
     @GetMapping(
@@ -42,6 +43,6 @@ public class LinksController {
     public LinkResponse delete(@PathVariable("id") Long id,
                                @RequestBody RemoveLinkRequest request) {
         // TODO: implement
-        return new LinkResponse(1L, "cool.url.com/path");
+        return new LinkResponse(1L, URI.create("cool.url.com/path"));
     }
 }

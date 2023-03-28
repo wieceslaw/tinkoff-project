@@ -1,9 +1,6 @@
 package ru.tinkoff.edu.java.bot.client;
 
-import jakarta.validation.constraints.NotBlank;
+import java.net.URI;
 
-public record RemoveLinkRequest(
-        @NotBlank
-        String link
-) {
+public record RemoveLinkRequest(URI link) {
 }
