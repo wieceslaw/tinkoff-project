@@ -10,11 +10,12 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @Component
 @Order(Ordered.LOWEST_PRECEDENCE)
 public class UnknownCommand implements Command {
+    private static final String UNKNOWN_COMMAND_RESPONSE =
+            "Unknown command, use /help to get list of commands";
+
     @Override
     public SendMessage handle(@NotNull Message message) {
-        // TODO: implement
-        return new SendMessage(message.getChatId().toString(),
-                "Unknown command, use /help to get list of commands");
+        return new SendMessage(message.getChatId().toString(), UNKNOWN_COMMAND_RESPONSE);
     }
 
     @Override
