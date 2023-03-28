@@ -4,5 +4,5 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.net.URI;
 
-public record RemoveLinkRequest(@NotBlank URI link) {
+public record RemoveLinkRequest(@NotBlank String link) {
 }
