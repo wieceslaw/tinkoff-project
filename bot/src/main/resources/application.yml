@@ -6,9 +6,11 @@ management:
   server:
     port: 8080
 
+
 app:
   test: 42
   bot:
-    token: ${TOKEN}
+    name: "tinkoff-bot"
+    token: ${BOT_TOKEN}
   scrapper:
     url: "localhost"

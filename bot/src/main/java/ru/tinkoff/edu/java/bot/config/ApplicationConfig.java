@@ -1,17 +1,21 @@
 package ru.tinkoff.edu.java.bot.config;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.validation.annotation.Validated;
+import org.telegram.telegrambots.starter.TelegramBotStarterConfiguration;
 
 @Validated
-@Getter
-@Setter
+@Data
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
 @Configuration
+@Import({
+        TelegramBotStarterConfiguration.class
+})
 public class ApplicationConfig {
     @NotNull
     private String test;
@@ -21,18 +25,18 @@ public class ApplicationConfig {
     private Scrapper scrapper;
 
     @Validated
-    @Getter
-    @Setter
+    @Data
     public static class Bot {
-        @NotNull
+        @NotBlank
         private String token;
+        @NotBlank
+        private String name;
     }
 
     @Validated
-    @Getter
-    @Setter
+    @Data
     public static class Scrapper {
-        @NotNull
+        @NotBlank
         private String url;
     }
 }

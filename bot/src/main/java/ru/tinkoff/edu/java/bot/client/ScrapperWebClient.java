@@ -7,10 +7,6 @@ import org.springframework.web.service.annotation.DeleteExchange;
 import org.springframework.web.service.annotation.GetExchange;
 import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
-import ru.tinkoff.edu.java.bot.client.dto.AddLinkRequest;
-import ru.tinkoff.edu.java.bot.client.dto.LinkResponse;
-import ru.tinkoff.edu.java.bot.client.dto.ListLinksResponse;
-import ru.tinkoff.edu.java.bot.client.dto.RemoveLinkRequest;
 
 @HttpExchange(
         accept = MediaType.APPLICATION_JSON_VALUE,
