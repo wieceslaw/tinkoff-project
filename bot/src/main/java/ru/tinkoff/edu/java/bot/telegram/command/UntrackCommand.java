@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 public class UntrackCommand implements PublicCommand {
     private final ScrapperWebService webService;
 
-    private static final Pattern pattern = Pattern.compile("^\\s*/untrack (\\S+)\\s*$");
+    private static final Pattern PATTERN = Pattern.compile("^\\s*/untrack (\\S+)\\s*$");
     private static final String COMMAND = "/untrack";
     private static final String DESCRIPTION = "stop tracking link";
     private static final String SUCCESS_RESPONSE = "Removed link from your tacking list";
@@ -38,7 +38,7 @@ public class UntrackCommand implements PublicCommand {
     @Override
     public SendMessage handle(@NotNull Message message) {
         String text = message.getText();
-        Matcher matcher = pattern.matcher(text);
+        Matcher matcher = PATTERN.matcher(text);
         if (!matcher.matches()) {
             return new SendMessage(message.getChatId().toString(), WRONG_FORMAT_RESPONSE);
         }

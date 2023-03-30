@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.bot.client;
+package ru.tinkoff.edu.java.scrapper.dto.controller;
 
 import java.util.List;
 

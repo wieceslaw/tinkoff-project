@@ -6,8 +6,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import ru.tinkoff.edu.java.bot.client.LinkResponse;
-import ru.tinkoff.edu.java.bot.client.ListLinksResponse;
+import ru.tinkoff.edu.java.bot.dto.scrapper.LinkResponse;
+import ru.tinkoff.edu.java.bot.dto.scrapper.ListLinksResponse;
 import ru.tinkoff.edu.java.bot.service.ScrapperWebService;
 
 import java.net.URI;
