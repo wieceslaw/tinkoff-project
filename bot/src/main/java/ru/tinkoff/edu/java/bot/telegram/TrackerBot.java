@@ -11,7 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.tinkoff.edu.java.bot.config.ApplicationConfig;
-import ru.tinkoff.edu.java.bot.telegram.command.PublicCommand;
+import ru.tinkoff.edu.java.bot.telegram.command.AbstractPublicCommand;
 
 import java.util.List;
 
@@ -20,9 +20,9 @@ import java.util.List;
 public class TrackerBot extends TelegramLongPollingBot {
     private final ApplicationConfig config;
     private final MessageHandler messageHandler;
-    private final List<PublicCommand> commands;
+    private final List<AbstractPublicCommand> commands;
 
-    public TrackerBot(ApplicationConfig config, MessageHandler messageHandler, List<PublicCommand> commands) {
+    public TrackerBot(ApplicationConfig config, MessageHandler messageHandler, List<AbstractPublicCommand> commands) {
         super(config.getBot().getToken());
         this.messageHandler = messageHandler;
         this.config = config;
@@ -33,7 +33,7 @@ public class TrackerBot extends TelegramLongPollingBot {
     private void init() {
         List<BotCommand> botCommands = commands
                 .stream()
-                .map(PublicCommand::toBotCommand)
+                .map(AbstractPublicCommand::toBotCommand)
                 .toList();
         SetMyCommands setMyCommands = new SetMyCommands();
         setMyCommands.setCommands(botCommands);
@@ -48,9 +48,9 @@ public class TrackerBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         if (update.hasMessage()) {
             Message message = update.getMessage();
-            SendMessage response = messageHandler.handle(message);
+            SendMessage sendMessage = messageHandler.handle(message);
             try {
-                execute(response);
+                execute(sendMessage);
             } catch (TelegramApiException e) {
                 log.error("Failed to send message due to error: {}", e.getMessage());
             }

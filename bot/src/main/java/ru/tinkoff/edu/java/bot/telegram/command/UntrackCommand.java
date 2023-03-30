@@ -15,24 +15,18 @@ import java.util.regex.Pattern;
 @Order(5)
 @Slf4j
 @Component
-@RequiredArgsConstructor
-public class UntrackCommand implements PublicCommand {
+public class UntrackCommand extends AbstractPublicCommand {
     private final ScrapperWebService webService;
 
-    private static final Pattern PATTERN = Pattern.compile("^\\s*/untrack (\\S+)\\s*$");
     private static final String COMMAND = "/untrack";
     private static final String DESCRIPTION = "stop tracking link";
+    private static final Pattern PATTERN = Pattern.compile("^\\s*/untrack (\\S+)\\s*$");
     private static final String SUCCESS_RESPONSE = "Removed link from your tacking list";
     private static final String WRONG_FORMAT_RESPONSE = "Use correct format: '\\untrack <link>'";
 
-    @Override
-    public String command() {
-        return COMMAND;
-    }
-
-    @Override
-    public String description() {
-        return DESCRIPTION;
+    public UntrackCommand(ScrapperWebService webService) {
+        super(COMMAND, DESCRIPTION);
+        this.webService = webService;
     }
 
     @Override

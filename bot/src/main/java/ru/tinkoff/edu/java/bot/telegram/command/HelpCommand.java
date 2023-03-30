@@ -8,18 +8,12 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 @Component
 @Order(1)
-public class HelpCommand implements PublicCommand {
+public class HelpCommand extends AbstractPublicCommand {
     private static final String COMMAND = "/help";
     private static final String DESCRIPTION = "shows a list of commands";
 
-    @Override
-    public String command() {
-        return COMMAND;
-    }
-
-    @Override
-    public String description() {
-        return DESCRIPTION;
+    public HelpCommand() {
+        super(COMMAND, DESCRIPTION);
     }
 
     @Override

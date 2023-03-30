@@ -15,24 +15,18 @@ import java.util.regex.Pattern;
 @Order(4)
 @Slf4j
 @Component
-@RequiredArgsConstructor
-public class TrackCommand implements PublicCommand {
+public class TrackCommand extends AbstractPublicCommand {
     private final ScrapperWebService webService;
 
-    private static final Pattern PATTERN = Pattern.compile("^\\s*/track (\\S+)\\s*$");
     private static final String COMMAND = "/track";
     private static final String DESCRIPTION = "start tracking link";
+    private static final Pattern PATTERN = Pattern.compile("^\\s*/track (\\S+)\\s*$");
     private static final String SUCCESS_RESPONSE = "Added link to your tacking list";
     private static final String WRONG_FORMAT_RESPONSE = "Use correct format: '\\track <link>'";
 
-    @Override
-    public String command() {
-        return COMMAND;
-    }
-
-    @Override
-    public String description() {
-        return DESCRIPTION;
+    public TrackCommand(ScrapperWebService webService) {
+        super(COMMAND, DESCRIPTION);
+        this.webService = webService;
     }
 
     @Override

@@ -16,23 +16,17 @@ import java.util.stream.Collectors;
 
 @Order(2)
 @Component
-@RequiredArgsConstructor
-public class ListCommand implements PublicCommand {
+public class ListCommand extends AbstractPublicCommand {
     private final ScrapperWebService webService;
 
-    private static final String EMPTY_LINKS_LIST_MESSAGE =
-            "You don't have tracked links yet, use /track <link> to track one";
     private static final String COMMAND = "/list";
     private static final String DESCRIPTION = "show a list of tracked links";
+    private static final String EMPTY_LINKS_LIST_MESSAGE =
+            "You don't have tracked links yet, use /track <link> to track one";
 
-    @Override
-    public String command() {
-        return COMMAND;
-    }
-
-    @Override
-    public String description() {
-        return DESCRIPTION;
+    public ListCommand(ScrapperWebService webService) {
+        super(COMMAND, DESCRIPTION);
+        this.webService = webService;
     }
 
     @Override
