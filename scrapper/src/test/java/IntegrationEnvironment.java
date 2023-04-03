@@ -24,11 +24,7 @@ public abstract class IntegrationEnvironment {
         SQL_CONTAINER.start();
 
         try {
-            Connection connection = DriverManager.getConnection(
-                    SQL_CONTAINER.getJdbcUrl(),
-                    SQL_CONTAINER.getUsername(),
-                    SQL_CONTAINER.getPassword()
-            );
+            Connection connection = getConnection();
             Path path = new File("../").toPath().toAbsolutePath().normalize();
             Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(connection));
             Liquibase liquibase = new liquibase.Liquibase(MASTER_PATH,
