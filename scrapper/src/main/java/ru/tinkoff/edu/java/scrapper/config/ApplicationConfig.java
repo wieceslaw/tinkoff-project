@@ -1,6 +1,8 @@
 package ru.tinkoff.edu.java.scrapper.config;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -13,34 +15,37 @@ import java.time.Duration;
 
 @EnableScheduling
 @Validated
-@Getter
-@Setter
+@Data
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
 @Configuration
 public class ApplicationConfig {
-    @NotNull private String test;
-    @NotNull private Scheduler scheduler;
-    @NotNull private GitHub gitHub;
-    @NotNull private StackOverflow stackOverflow;
+    @NotNull
+    private String test;
+    @NotNull
+    private Scheduler scheduler;
+    @NotNull
+    private GitHub gitHub;
+    @NotNull
+    private StackOverflow stackOverflow;
 
     @Validated
-    @Getter
-    @Setter
+    @Data
     public static class Scheduler {
-        @NotNull private Duration interval;
+        @NotNull
+        private Duration interval;
     }
 
     @Validated
-    @Getter
-    @Setter
+    @Data
     public static class GitHub {
-        @NotNull private String url = "https://api.github.com";
+        @NotBlank
+        private String url = "https://api.github.com";
     }
 
     @Validated
-    @Getter
-    @Setter
+    @Data
     public static class StackOverflow {
-        @NotNull private String url = "https://stackoverflow.com/2.3";
+        @NotBlank
+        private String url = "https://stackoverflow.com/2.3";
     }
 }
