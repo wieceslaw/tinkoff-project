@@ -14,7 +14,7 @@ class IntegrationEnvironmentTest extends IntegrationEnvironment {
         Connection connection = getConnection();
         List<String> tableNames = getTablesNames(connection);
         Set<String> correctNames = new HashSet<>(Arrays.asList(
-                "link", "chat", "databasechangeloglock", "databasechangelog"));
+                "link", "chat", "databasechangeloglock", "databasechangelog", "subscription"));
         for (String name : tableNames) {
             assertThat(correctNames).contains(name);
         }
