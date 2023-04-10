@@ -44,7 +44,7 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
-    void add__duplicate_throwsException() {
+    void add__alreadyExist_throwsException() {
         // given
         Long id = 1L;
 
@@ -90,7 +90,7 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
-    void getAll__nothingExists_returnsZeroItems() {
+    void getAll__nothingExists_zeroItemsReturned() {
         // given
 
         // when
@@ -103,7 +103,7 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
-    void getAll__oneExists_returnsOne() {
+    void getAll__oneExists_oneReturned() {
         // given
         Long id = 1L;
         create(id);
@@ -112,7 +112,7 @@ class JdbcChatRepositoryTest extends IntegrationEnvironment {
         List<ChatEntity> all = chatRepository.findAll();
 
         // then
-        assertEquals(all.size(), 0);
+        assertEquals(all.size(), 1);
     }
 
     private List<ChatEntity> findAll() {

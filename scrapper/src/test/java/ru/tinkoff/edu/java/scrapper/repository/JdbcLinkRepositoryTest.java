@@ -4,13 +4,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.IntegrationEnvironment;
 import ru.tinkoff.edu.java.scrapper.dto.entity.LinkEntity;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,69 +36,88 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         String url = "https://github.com/Wieceslaw/tinkoff-project";
 
         // when
-        int countBefore = findAll().size();
-        int added = linkRepository.add(url);
-        int countAfter = findAll().size();
+        int countBefore = getAll().size();
+        linkRepository.add(url);
+        int countAfter = getAll().size();
 
         // then
-        assertEquals(added, 1);
         assertEquals(countBefore + 1, countAfter);
     }
 
     @Test
     @Transactional
     @Rollback
-    void add__duplicate_throwsException() {
+    void add__alreadyExist_throwsException() {
         // given
         String url = "https://github.com/Wieceslaw/tinkoff-project";
 
         // when
-        int added = linkRepository.add(url);
+        linkRepository.add(url);
 
         // then
-        assertEquals(added, 1);
         assertThrows(DuplicateKeyException.class, () -> linkRepository.add(url));
     }
 
     @Test
     @Transactional
     @Rollback
-    void remove__oneExist_oneRemoved() {
+    void find__exists_returnsOne() {
         // given
         String url = "https://github.com/Wieceslaw/tinkoff-project";
-        create(url);
+        Long id = createLink(url);
 
         // when
-        int countBefore = findAll().size();
-        int removed = linkRepository.remove(url);
-        int countAfter = findAll().size();
+        LinkEntity linkEntity = linkRepository.find(url);
 
         // then
-        assertEquals(removed, 1);
-        assertEquals(countBefore - 1, countAfter);
+        assertEquals(linkEntity.getId(), id);
     }
 
     @Test
     @Transactional
     @Rollback
-    void remove__notExist_zeroRemoved() {
+    void find__notExists_throwsException() {
         // given
         String url = "https://github.com/Wieceslaw/tinkoff-project";
 
         // when
-        int countBefore = findAll().size();
-        int removed = linkRepository.remove(url);
-        int countAfter = findAll().size();
 
         // then
-        assertEquals(removed, 0);
-        assertEquals(countBefore, countAfter);
+        assertThrows(EmptyResultDataAccessException.class, () -> linkRepository.find(url));
     }
 
     @Test
     @Transactional
     @Rollback
-    void getAll__nothingExists_returnsZeroItems() {
+    void findById__exists_returnsOne() {
+        // given
+        String url = "https://github.com/Wieceslaw/tinkoff-project";
+        Long id = createLink(url);
+
+        // when
+        LinkEntity linkEntity = linkRepository.findById(id);
+
+        // then
+        assertEquals(linkEntity.getId(), id);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void findById__notExists_throwsException() {
+        // given
+        Long id = 1L;
+
+        // when
+
+        // then
+        assertThrows(EmptyResultDataAccessException.class, () -> linkRepository.findById(id));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void findAll__nothingExists_zeroItemsReturned() {
         // given
 
         // when
@@ -107,10 +130,10 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     @Test
     @Transactional
     @Rollback
-    void getAll__oneExists_returnsOne() {
+    void findAll__oneExists_oneReturned() {
         // given
         String url = "https://github.com/Wieceslaw/tinkoff-project";
-        create(url);
+        createLink(url);
 
         // when
         List<LinkEntity> all = linkRepository.findAll();
@@ -119,11 +142,164 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         assertEquals(all.size(), 1);
     }
 
-    private List<LinkEntity> findAll() {
+    @Test
+    @Transactional
+    @Rollback
+    void findWithChatSubscription__exists_returnsNotEmpty() {
+        // given
+        String url = "https://github.com/Wieceslaw/tinkoff-project";
+        Long chatId = 1L;
+        Long linkId = createLink(url);
+        createChat(chatId);
+        createSubscription(chatId, linkId);
+
+        // when
+        List<LinkEntity> linkEntities = linkRepository.findWithChatSubscription(chatId);
+
+        // then
+        assertEquals(linkEntities.size(), 1);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void findWithChatSubscription__notExists_returnsEmpty() {
+        // given
+        Long chatId = 1L;
+
+        // when
+        List<LinkEntity> linkEntities = linkRepository.findWithChatSubscription(chatId);
+
+        // then
+        assertEquals(linkEntities.size(), 0);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void remove__oneExists_oneRemoved() {
+        // given
+        String url = "https://github.com/Wieceslaw/tinkoff-project";
+        createLink(url);
+
+        // when
+        int countBefore = getAll().size();
+        int removed = linkRepository.remove(url);
+        int countAfter = getAll().size();
+
+        // then
+        assertEquals(removed, 1);
+        assertEquals(countBefore - 1, countAfter);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void remove__notExists_zeroRemoved() {
+        // given
+        String url = "https://github.com/Wieceslaw/tinkoff-project";
+
+        // when
+        int countBefore = getAll().size();
+        int removed = linkRepository.remove(url);
+        int countAfter = getAll().size();
+
+        // then
+        assertEquals(removed, 0);
+        assertEquals(countBefore, countAfter);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void removeById__exists_removed() {
+        // given
+        String url = "https://github.com/Wieceslaw/tinkoff-project";
+        Long id = createLink(url);
+
+        // when
+        int beforeCount = getAll().size();
+        linkRepository.removeById(id);
+        int afterCount = getAll().size();
+
+        // then
+        assertEquals(beforeCount - 1, afterCount);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void removeById__notExists_notRemoved() {
+        // given
+        Long id = 1L;
+
+        // when
+        int beforeCount = getAll().size();
+        linkRepository.removeById(id);
+        int afterCount = getAll().size();
+
+        // then
+        assertEquals(beforeCount, afterCount);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void removeWithZeroSubscriptions__doesNotHaveSub_removed() {
+        // given
+        String url = "https://github.com/Wieceslaw/tinkoff-project";
+        createLink(url);
+
+        // when
+        int beforeCount = getAll().size();
+        int removed = linkRepository.removeWithZeroSubscriptions();
+        int afterCount = getAll().size();
+
+        // then
+        assertEquals(removed, 1);
+        assertEquals(beforeCount - 1, afterCount);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void removeWithZeroSubscriptions__allLinksHaveSub_nothingRemoved() {
+        // given
+        String url = "https://github.com/Wieceslaw/tinkoff-project";
+        Long chatId = 1L;
+        Long linkId = createLink(url);
+        createChat(chatId);
+        createSubscription(chatId, linkId);
+
+        // when
+        int beforeCount = getAll().size();
+        int removed = linkRepository.removeWithZeroSubscriptions();
+        int afterCount = getAll().size();
+
+        // then
+        assertEquals(removed, 0);
+        assertEquals(beforeCount, afterCount);
+    }
+
+    private List<LinkEntity> getAll() {
         return template.query("select id, url from link", new BeanPropertyRowMapper<>(LinkEntity.class));
     }
 
-    private void create(String url) {
-        template.update("insert into link (url) values (?)", url);
+    private Long createLink(String url) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        template.update(con -> {
+            PreparedStatement ps = con.prepareStatement("insert into link (url) values (?)", new String[] {"id"});
+            ps.setString(1, url);
+            return ps;
+        }, keyHolder);
+        return keyHolder.getKey().longValue();
+    }
+
+    private void createChat(Long id) {
+        template.update("insert into chat (id) values (?)", id);
+    }
+
+    private void createSubscription(Long chatId, Long linkId) {
+        template.update("insert into subscription (chat_id, link_id) values (?, ?)", chatId, linkId);
     }
 }

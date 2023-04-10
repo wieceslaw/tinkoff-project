@@ -10,6 +10,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.dto.entity.LinkEntity;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 
 @Repository
@@ -20,7 +22,11 @@ public class JdbcLinkRepository {
 
     public Long add(String url) throws DuplicateKeyException {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        template.update("insert into link (url) values (?)", url, keyHolder);
+        template.update(con -> {
+            PreparedStatement ps = con.prepareStatement("insert into link (url) values (?)", new String[] {"id"});
+            ps.setString(1, url);
+            return ps;
+        }, keyHolder);
         return keyHolder.getKey().longValue();
     }
 
@@ -32,19 +38,19 @@ public class JdbcLinkRepository {
         return template.queryForObject("select id, url from link where id = ?", mapper, id);
     }
 
-    public List<LinkEntity> findWithChatSubscription(Long chatId) {
-        return template.query("select id, url from link where id in (select link_id from subscription where chat_id = ?)", mapper, chatId);
-    }
-
     public List<LinkEntity> findAll() {
         return template.query("select id, url from link", mapper);
+    }
+
+    public List<LinkEntity> findWithChatSubscription(Long chatId) {
+        return template.query("select id, url from link where id in (select link_id from subscription where chat_id = ?)", mapper, chatId);
     }
 
     public Integer remove(String url) {
         return template.update("delete from link where url = ?", url);
     }
 
-    public Integer removeLinkById(Long id) {
+    public Integer removeById(Long id) {
         return template.update("delete from link where id = ?", id);
     }
 

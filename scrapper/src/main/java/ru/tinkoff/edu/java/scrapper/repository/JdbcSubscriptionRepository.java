@@ -23,10 +23,6 @@ public class JdbcSubscriptionRepository {
         return template.query("select chat_id, link_id from subscription", mapper);
     }
 
-    public List<SubscriptionEntity> findByChatId(Long chatId) {
-        return template.query("select chat_id, link_id from subscription where chat_id = ?", mapper, chatId);
-    }
-
     public Integer remove(Long chatId, Long linkId) {
         return template.update("delete from subscription where chat_id = ? and link_id = ?", chatId, linkId);
     }
