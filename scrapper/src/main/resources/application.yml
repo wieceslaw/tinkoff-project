@@ -14,3 +14,9 @@ app:
     url: "https://api.github.com"
   stackoverflow:
     url: "https://api.stackexchange.com/2.3"
+
+spring:
+  datasource:
+    url: ${DB_URL}
+    password: ${DB_PASSWORD}
+    username: ${DB_USERNAME}

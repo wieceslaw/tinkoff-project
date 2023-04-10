@@ -1,5 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -7,14 +8,20 @@ import ru.tinkoff.edu.java.scrapper.dto.controller.AddLinkRequest;
 import ru.tinkoff.edu.java.scrapper.dto.controller.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.dto.controller.ListLinksResponse;
 import ru.tinkoff.edu.java.scrapper.dto.controller.RemoveLinkRequest;
+import ru.tinkoff.edu.java.scrapper.dto.entity.LinkEntity;
+import ru.tinkoff.edu.java.scrapper.service.api.SubscriptionService;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
 
 @Validated
 @RequestMapping("/links")
 @RestController
+@RequiredArgsConstructor
 public class LinksController {
+    private final SubscriptionService subscriptionService;
+
     @PostMapping(
             path = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -22,8 +29,9 @@ public class LinksController {
     )
     public LinkResponse create(@PathVariable("id") Long id,
                                @RequestBody AddLinkRequest request) {
-        // TODO: implement
-        return new LinkResponse(1L, URI.create("cool.url.com/path"));
+        // TODO: URI checking
+        LinkEntity linkEntity = subscriptionService.subscribe(id, URI.create(request.link()));
+        return new LinkResponse(linkEntity.getId(), URI.create(linkEntity.getUrl()));
     }
 
     @GetMapping(
@@ -31,8 +39,12 @@ public class LinksController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ListLinksResponse getAll(@PathVariable("id") Long id) {
-        // TODO: implement
-        return new ListLinksResponse(new ArrayList<>(), 0);
+        // TODO: URI checking
+        List<LinkResponse> links = subscriptionService.getSubscriptions(id)
+                .stream()
+                .map(linkEntity -> new LinkResponse(linkEntity.getId(), URI.create(linkEntity.getUrl())))
+                .toList();
+        return new ListLinksResponse(links, links.size());
     }
 
     @DeleteMapping(
@@ -42,7 +54,8 @@ public class LinksController {
     )
     public LinkResponse delete(@PathVariable("id") Long id,
                                @RequestBody RemoveLinkRequest request) {
-        // TODO: implement
-        return new LinkResponse(1L, URI.create("cool.url.com/path"));
+        // TODO: URI checking
+        LinkEntity linkEntity = subscriptionService.unsubscribe(id, URI.create(request.link()));
+        return new LinkResponse(linkEntity.getId(), URI.create(linkEntity.getUrl()));
     }
 }
