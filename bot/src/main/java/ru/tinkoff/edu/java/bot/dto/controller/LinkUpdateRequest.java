@@ -9,11 +9,11 @@ import java.util.List;
 public record LinkUpdateRequest(
         // TODO: or zero?
         @Positive
-        Integer id,
+        Long id,
         @NotBlank
         String url,
         @NotBlank
         String description,
         @NotNull
-        List<Integer> tgChatsIds
+        List<Long> tgChatsIds
 ) {}

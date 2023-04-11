@@ -27,4 +27,13 @@ public class JdbcChatRepository {
     public List<ChatEntity> findAll() {
         return template.query("select id from chat", mapper);
     }
+
+    public List<ChatEntity> findAllSubscribers(Long linkId) {
+        return template.query("""
+                select id 
+                from chat
+                join subscription on chat.id = chat_id
+                where link_id = ?
+                """, mapper, linkId);
+    }
 }

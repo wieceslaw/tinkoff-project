@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.dto.entity.LinkEntity;
 
 import java.sql.PreparedStatement;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Repository
@@ -70,6 +71,14 @@ public class JdbcLinkRepository {
                 where now() - last_check_time > ?::interval
                 returning id, url, last_check_time, last_update_time
                 """, mapper, secondsDelta.toString() + " seconds");
+    }
+
+    public Integer updateLastUpdateTime(Long id, OffsetDateTime newUpdateTime) {
+        return template.update("""
+                update link
+                set last_update_time = ?
+                where id = ?
+                """, newUpdateTime, id);
     }
 
     public Integer remove(String url) {

@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.scrapper.dto.github;
+package ru.tinkoff.edu.java.scrapper.dto.client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,4 +12,9 @@ public record GitHubRepositoryResponse(
         OffsetDateTime updatedAt,
         @JsonProperty("created_at")
         OffsetDateTime createdAt
-) {}
+) implements UpdatableResponse {
+        @Override
+        public OffsetDateTime getLastUpdateTime() {
+                return updatedAt;
+        }
+}

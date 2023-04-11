@@ -12,7 +12,6 @@ import ru.tinkoff.edu.java.scrapper.dto.entity.LinkEntity;
 import ru.tinkoff.edu.java.scrapper.service.api.SubscriptionService;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 @Validated
@@ -40,7 +39,7 @@ public class LinksController {
     )
     public ListLinksResponse getAll(@PathVariable("id") Long id) {
         // TODO: URI checking
-        List<LinkResponse> links = subscriptionService.getSubscriptions(id)
+        List<LinkResponse> links = subscriptionService.getChatSubscriptions(id)
                 .stream()
                 .map(linkEntity -> new LinkResponse(linkEntity.getId(), URI.create(linkEntity.getUrl())))
                 .toList();

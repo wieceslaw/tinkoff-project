@@ -8,6 +8,7 @@ import ru.tinkoff.edu.java.scrapper.dto.entity.LinkEntity;
 import ru.tinkoff.edu.java.scrapper.repository.JdbcLinkRepository;
 import ru.tinkoff.edu.java.scrapper.service.api.UpdateService;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Slf4j
@@ -21,5 +22,11 @@ public class JdbcUpdateService implements UpdateService {
     @Transactional
     public List<LinkEntity> findLinksWithLastCheckedTimeLongAgo(Integer secondsDelta) {
         return linkRepository.findWithLastCheckedTimeLongAgo(secondsDelta);
+    }
+
+    @Override
+    @Transactional
+    public void updateLink(LinkEntity linkEntity, OffsetDateTime newUpdateTime) {
+        linkRepository.updateLastUpdateTime(linkEntity.getId(), newUpdateTime);
     }
 }

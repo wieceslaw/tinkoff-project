@@ -15,7 +15,7 @@ app:
   stackoverflow:
     url: "https://api.stackexchange.com/2.3"
   bot:
-    url: "http://localhost"
+    url: "http://localhost:8083"
 
 spring:
   datasource:

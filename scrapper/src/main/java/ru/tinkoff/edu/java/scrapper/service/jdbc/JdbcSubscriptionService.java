@@ -6,8 +6,10 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.tinkoff.edu.java.scrapper.dto.entity.ChatEntity;
 import ru.tinkoff.edu.java.scrapper.dto.entity.LinkEntity;
 import ru.tinkoff.edu.java.scrapper.exception.InternalError;
+import ru.tinkoff.edu.java.scrapper.repository.JdbcChatRepository;
 import ru.tinkoff.edu.java.scrapper.repository.JdbcLinkRepository;
 import ru.tinkoff.edu.java.scrapper.repository.JdbcSubscriptionRepository;
 import ru.tinkoff.edu.java.scrapper.service.api.SubscriptionService;
@@ -22,6 +24,7 @@ import java.util.List;
 public class JdbcSubscriptionService implements SubscriptionService {
     private final JdbcSubscriptionRepository subscriptionRepository;
     private final JdbcLinkRepository linkRepository;
+    private final JdbcChatRepository chatRepository;
 
     @Override
     @Transactional
@@ -62,8 +65,12 @@ public class JdbcSubscriptionService implements SubscriptionService {
     }
 
     @Override
-    public List<LinkEntity> getSubscriptions(Long chatId) {
-        // TODO?: check if chat exists
+    public List<LinkEntity> getChatSubscriptions(Long chatId) {
         return linkRepository.findWithChatSubscription(chatId);
+    }
+
+    @Override
+    public List<ChatEntity> getLinkSubscribers(Long linkId) {
+        return chatRepository.findAllSubscribers(linkId);
     }
 }
