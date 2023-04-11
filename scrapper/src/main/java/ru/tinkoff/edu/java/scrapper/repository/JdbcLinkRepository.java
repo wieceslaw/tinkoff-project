@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.dto.entity.LinkEntity;
 
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.util.List;
 
 @Repository
@@ -23,7 +22,10 @@ public class JdbcLinkRepository {
     public Long add(String url) throws DuplicateKeyException {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         template.update(con -> {
-            PreparedStatement ps = con.prepareStatement("insert into link (url) values (?)", new String[] {"id"});
+            PreparedStatement ps = con.prepareStatement("""
+                    insert into link (url) 
+                    values (?)
+                    """, new String[]{"id"});
             ps.setString(1, url);
             return ps;
         }, keyHolder);
@@ -31,30 +33,63 @@ public class JdbcLinkRepository {
     }
 
     public LinkEntity find(String url) throws EmptyResultDataAccessException {
-        return template.queryForObject("select id, url from link where url = ?", mapper, url);
+        return template.queryForObject("""
+                select id, url, last_check_time, last_update_time 
+                from link 
+                where url = ?
+                """, mapper, url);
     }
 
     public LinkEntity findById(Long id) throws EmptyResultDataAccessException {
-        return template.queryForObject("select id, url from link where id = ?", mapper, id);
+        return template.queryForObject("""
+                select id, url, last_check_time, last_update_time 
+                from link 
+                where id = ?
+                """, mapper, id);
     }
 
     public List<LinkEntity> findAll() {
-        return template.query("select id, url from link", mapper);
+        return template.query("""
+                select id, url, last_check_time, last_update_time 
+                from link
+                """, mapper);
     }
 
     public List<LinkEntity> findWithChatSubscription(Long chatId) {
-        return template.query("select id, url from link where id in (select link_id from subscription where chat_id = ?)", mapper, chatId);
+        return template.query("""
+                select id, url, last_check_time, last_update_time
+                from link 
+                where id in (select link_id from subscription where chat_id = ?)
+                """, mapper, chatId);
+    }
+
+    public List<LinkEntity> findWithLastCheckedTimeLongAgo(Integer secondsDelta) {
+        return template.query("""
+                update link
+                set last_check_time = now()
+                where now() - last_check_time > ?::interval
+                returning id, url, last_check_time, last_update_time
+                """, mapper, secondsDelta.toString() + " seconds");
     }
 
     public Integer remove(String url) {
-        return template.update("delete from link where url = ?", url);
+        return template.update("""
+                delete from link 
+                where url = ?
+                """, url);
     }
 
     public Integer removeById(Long id) {
-        return template.update("delete from link where id = ?", id);
+        return template.update("""
+                delete from link 
+                where id = ?
+                """, id);
     }
 
     public Integer removeWithZeroSubscriptions() {
-        return template.update("DELETE FROM link WHERE (SELECT COUNT(link_id) FROM subscription WHERE link_id = link.id) = 0");
+        return template.update("""
+                delete from link 
+                where (select count(link_id) from subscription where link_id = link.id) = 0
+                """);
     }
 }

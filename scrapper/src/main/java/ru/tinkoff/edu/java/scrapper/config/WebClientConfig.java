@@ -1,6 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.support.WebClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
+import ru.tinkoff.edu.java.scrapper.client.BotWebClient;
 import ru.tinkoff.edu.java.scrapper.client.GitHubWebClient;
 import ru.tinkoff.edu.java.scrapper.client.StackOverflowWebClient;
 
@@ -18,9 +20,11 @@ import ru.tinkoff.edu.java.scrapper.client.StackOverflowWebClient;
 @Configuration
 public class WebClientConfig {
     private final ObjectMapper objectMapper;
+    private ExchangeStrategies exchangeStrategies;
 
-    private WebClient buildWebClient(String url) {
-        ExchangeStrategies strategies = ExchangeStrategies
+    @PostConstruct
+    private void init() {
+        exchangeStrategies = ExchangeStrategies
                 .builder()
                 .codecs(clientDefaultCodecsConfigurer -> {
                     clientDefaultCodecsConfigurer
@@ -30,27 +34,31 @@ public class WebClientConfig {
                             .defaultCodecs()
                             .jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper, MediaType.APPLICATION_JSON));
                 }).build();
-        return WebClient.builder()
-                .exchangeStrategies(strategies)
-                .baseUrl(url)
+    }
+
+    private <T> T buildWebClient(String baseUrl, Class<T> client) {
+        WebClient webClient = WebClient.builder()
+                .exchangeStrategies(exchangeStrategies)
+                .baseUrl(baseUrl)
                 .build();
+        HttpServiceProxyFactory httpServiceProxyFactory = HttpServiceProxyFactory
+                .builder(WebClientAdapter.forClient(webClient))
+                .build();
+        return httpServiceProxyFactory.createClient(client);
     }
 
     @Bean
     public GitHubWebClient gitHubWebClient(ApplicationConfig config) {
-        WebClient webClient = buildWebClient(config.getGitHub().getUrl());
-        HttpServiceProxyFactory httpServiceProxyFactory = HttpServiceProxyFactory
-                .builder(WebClientAdapter.forClient(webClient))
-                .build();
-        return httpServiceProxyFactory.createClient(GitHubWebClient.class);
+        return buildWebClient(config.getGitHub().getUrl(), GitHubWebClient.class);
     }
 
     @Bean
     public StackOverflowWebClient stackOverflowWebClient(ApplicationConfig config) {
-        WebClient webClient = buildWebClient(config.getStackOverflow().getUrl());
-        HttpServiceProxyFactory httpServiceProxyFactory = HttpServiceProxyFactory
-                .builder(WebClientAdapter.forClient(webClient))
-                .build();
-        return httpServiceProxyFactory.createClient(StackOverflowWebClient.class);
+        return buildWebClient(config.getStackOverflow().getUrl(), StackOverflowWebClient.class);
+    }
+
+    @Bean
+    public BotWebClient botWebClient(ApplicationConfig config) {
+        return buildWebClient(config.getBot().getUrl(), BotWebClient.class);
     }
 }

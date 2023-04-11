@@ -7,13 +7,15 @@ management:
     port: 8080
 
 app:
-  test: 42
   scheduler:
+    checkSecondsDelay: 20
     interval: 10000
   github:
     url: "https://api.github.com"
   stackoverflow:
     url: "https://api.stackexchange.com/2.3"
+  bot:
+    url: "http://localhost"
 
 spring:
   datasource:

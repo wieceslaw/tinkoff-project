@@ -20,19 +20,22 @@ import java.time.Duration;
 @Configuration
 public class ApplicationConfig {
     @NotNull
-    private String test;
-    @NotNull
     private Scheduler scheduler;
     @NotNull
     private GitHub gitHub;
     @NotNull
     private StackOverflow stackOverflow;
+    @NotNull
+    private Bot bot;
+
 
     @Validated
     @Data
     public static class Scheduler {
         @NotNull
         private Duration interval;
+        @NotNull
+        private Integer checkSecondsDelay = 50000;
     }
 
     @Validated
@@ -47,5 +50,13 @@ public class ApplicationConfig {
     public static class StackOverflow {
         @NotBlank
         private String url = "https://stackoverflow.com/2.3";
+    }
+
+
+    @Validated
+    @Data
+    public static class Bot {
+        @NotBlank
+        private String url = "http://localhost";
     }
 }
