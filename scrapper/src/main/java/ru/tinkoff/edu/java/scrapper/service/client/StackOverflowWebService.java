@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.scrapper.client.StackOverflowWebClient;
 import ru.tinkoff.edu.java.scrapper.dto.client.StackOverflowQuestionResponse;
 import ru.tinkoff.edu.java.scrapper.dto.client.StackOverflowQuestionsResponse;
+import ru.tinkoff.edu.java.scrapper.dto.client.UpdatesInfo;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,10 +16,14 @@ import java.util.stream.Collectors;
 public class StackOverflowWebService {
     private final StackOverflowWebClient stackOverflowWebClient;
 
-    public StackOverflowQuestionResponse fetchQuestion(Integer id) {
-        return stackOverflowWebClient
+    public UpdatesInfo fetchQuestionUpdates(Integer id) {
+        StackOverflowQuestionResponse response = stackOverflowWebClient
                 .fetchQuestion(id)
                 .map(item -> item.items().get(0)).block();
+        return new UpdatesInfo(
+                response.lastActivityDate(),
+                List.of("Check out new update from " + response.title())
+        );
     }
 
     public List<StackOverflowQuestionResponse> fetchQuestions(List<Integer> ids) {

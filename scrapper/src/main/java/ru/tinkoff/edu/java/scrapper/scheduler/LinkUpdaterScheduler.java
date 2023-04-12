@@ -2,6 +2,7 @@ package ru.tinkoff.edu.java.scrapper.scheduler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.parser.data.GitHubLinkData;
@@ -10,7 +11,7 @@ import ru.tinkoff.edu.java.parser.data.StackOverflowLinkData;
 import ru.tinkoff.edu.java.parser.handler.LinkHandlerChain;
 import ru.tinkoff.edu.java.scrapper.config.ApplicationConfig;
 import ru.tinkoff.edu.java.scrapper.dto.bot.LinkUpdateRequest;
-import ru.tinkoff.edu.java.scrapper.dto.client.UpdatableResponse;
+import ru.tinkoff.edu.java.scrapper.dto.client.UpdatesInfo;
 import ru.tinkoff.edu.java.scrapper.dto.entity.ChatEntity;
 import ru.tinkoff.edu.java.scrapper.dto.entity.LinkEntity;
 import ru.tinkoff.edu.java.scrapper.service.api.SubscriptionService;
@@ -19,6 +20,7 @@ import ru.tinkoff.edu.java.scrapper.service.client.BotWebService;
 import ru.tinkoff.edu.java.scrapper.service.client.GitHubWebService;
 import ru.tinkoff.edu.java.scrapper.service.client.StackOverflowWebService;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Slf4j
@@ -41,38 +43,37 @@ public class LinkUpdaterScheduler {
                 .findLinksWithLastCheckedTimeLongAgo(config.getScheduler().getCheckSecondsDelay());
         for (LinkEntity link : links) {
             LinkData linkData = handlerChain.handle(link.getUrl());
-            UpdatableResponse response = fetchResponse(linkData);
-            updateLink(link, response);
+            UpdatesInfo updatesInfo = fetchUpdates(linkData, link.getLastUpdateTime());
+            updateLink(link, updatesInfo);
         }
         log.info("Update!");
     }
 
-    private UpdatableResponse fetchResponse(LinkData linkData) {
+    private UpdatesInfo fetchUpdates(LinkData linkData, OffsetDateTime lastUpdateTimeSaved) {
         return switch (linkData) {
-            case GitHubLinkData data ->
-                    gitHubWebService.fetchRepository(data.owner(), data.repo());
-            case StackOverflowLinkData data ->
-                    stackOverflowWebService.fetchQuestion(data.questionId());
+            case GitHubLinkData data -> gitHubWebService.fetchEventsUpdates(data.owner(), data.repo(), lastUpdateTimeSaved);
+            case StackOverflowLinkData data -> stackOverflowWebService.fetchQuestionUpdates(data.questionId());
         };
     }
 
-    private void updateLink(LinkEntity linkEntity, UpdatableResponse response) {
+    private void updateLink(LinkEntity linkEntity, UpdatesInfo updatesInfo) {
         if (linkEntity.getLastUpdateTime() == null ||
-                linkEntity.getLastUpdateTime().isBefore(response.getLastUpdateTime())) {
-            updateService.updateLink(linkEntity, response.getLastUpdateTime());
-            List<Long> chatIds = subscriptionService
-                    .getLinkSubscribers(linkEntity.getId())
-                    .stream()
-                    .map(ChatEntity::getId)
-                    .toList();
-            // TODO: change
-            String description = "Update!";
+                linkEntity.getLastUpdateTime().isBefore(updatesInfo.lastUpdateTime())) {
+            updateService.updateLink(linkEntity, updatesInfo.lastUpdateTime());
             botWebService.sendUpdate(new LinkUpdateRequest(
                     linkEntity.getId(),
                     linkEntity.getUrl(),
-                    description,
-                    chatIds
+                    Strings.join(updatesInfo.updates(), '\n'),
+                    getChatsIds(linkEntity.getId())
             ));
         }
+    }
+
+    private List<Long> getChatsIds(Long linkId) {
+        return subscriptionService
+                .getLinkSubscribers(linkId)
+                .stream()
+                .map(ChatEntity::getId)
+                .toList();
     }
 }

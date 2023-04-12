@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Positive;
 import java.util.List;
 
 public record LinkUpdateRequest(
-        // TODO: or zero?
         @Positive
         Long id,
         @NotBlank

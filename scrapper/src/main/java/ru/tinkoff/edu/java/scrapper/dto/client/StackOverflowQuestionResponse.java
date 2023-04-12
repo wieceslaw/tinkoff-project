@@ -14,9 +14,5 @@ public record StackOverflowQuestionResponse(
         OffsetDateTime lastActivityDate,
         @JsonProperty("creation_date")
         OffsetDateTime creationDate
-) implements UpdatableResponse {
-        @Override
-        public OffsetDateTime getLastUpdateTime() {
-                return lastActivityDate;
-        }
+) {
 }

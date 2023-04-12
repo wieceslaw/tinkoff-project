@@ -28,7 +28,6 @@ public class LinksController {
     )
     public LinkResponse create(@PathVariable("id") Long id,
                                @RequestBody AddLinkRequest request) {
-        // TODO: URI checking
         LinkEntity linkEntity = subscriptionService.subscribe(id, URI.create(request.link()));
         return new LinkResponse(linkEntity.getId(), URI.create(linkEntity.getUrl()));
     }
@@ -38,7 +37,6 @@ public class LinksController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ListLinksResponse getAll(@PathVariable("id") Long id) {
-        // TODO: URI checking
         List<LinkResponse> links = subscriptionService.getChatSubscriptions(id)
                 .stream()
                 .map(linkEntity -> new LinkResponse(linkEntity.getId(), URI.create(linkEntity.getUrl())))
@@ -53,7 +51,6 @@ public class LinksController {
     )
     public LinkResponse delete(@PathVariable("id") Long id,
                                @RequestBody RemoveLinkRequest request) {
-        // TODO: URI checking
         LinkEntity linkEntity = subscriptionService.unsubscribe(id, URI.create(request.link()));
         return new LinkResponse(linkEntity.getId(), URI.create(linkEntity.getUrl()));
     }

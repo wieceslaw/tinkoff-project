@@ -8,7 +8,7 @@ management:
 
 app:
   scheduler:
-    checkSecondsDelay: 20
+    checkSecondsDelay: 90
     interval: 10000
   github:
     url: "https://api.github.com"
