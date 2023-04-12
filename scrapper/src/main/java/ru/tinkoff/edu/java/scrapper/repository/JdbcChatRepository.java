@@ -17,15 +17,21 @@ public class JdbcChatRepository {
     private final BeanPropertyRowMapper<ChatEntity> mapper = new BeanPropertyRowMapper<>(ChatEntity.class);
 
     public Integer add(Long id) throws DuplicateKeyException {
-        return template.update("insert into chat (id) values (?)", id);
+        return template.update("""
+                insert into chat (id) values (?)
+                """, id);
     }
 
     public Integer removeById(Long id) {
-        return template.update("delete from chat where id = ?", id);
+        return template.update("""
+                delete from chat where id = ?
+                """, id);
     }
 
     public List<ChatEntity> findAll() {
-        return template.query("select id from chat", mapper);
+        return template.query("""
+                select id from chat
+                """, mapper);
     }
 
     public List<ChatEntity> findAllSubscribers(Long linkId) {

@@ -24,8 +24,7 @@ public class JdbcLinkRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         template.update(con -> {
             PreparedStatement ps = con.prepareStatement("""
-                    insert into link (url) 
-                    values (?)
+                    insert into link (url) values (?)
                     """, new String[]{"id"});
             ps.setString(1, url);
             return ps;
@@ -51,8 +50,7 @@ public class JdbcLinkRepository {
 
     public List<LinkEntity> findAll() {
         return template.query("""
-                select id, url, last_check_time, last_update_time 
-                from link
+                select id, url, last_check_time, last_update_time from link
                 """, mapper);
     }
 
@@ -60,7 +58,8 @@ public class JdbcLinkRepository {
         return template.query("""
                 select id, url, last_check_time, last_update_time
                 from link 
-                where id in (select link_id from subscription where chat_id = ?)
+                join subscription s on link.id = s.link_id
+                where chat_id = ?
                 """, mapper, chatId);
     }
 
@@ -75,23 +74,19 @@ public class JdbcLinkRepository {
 
     public Integer updateLastUpdateTime(Long id, OffsetDateTime newUpdateTime) {
         return template.update("""
-                update link
-                set last_update_time = ?
-                where id = ?
+                update link set last_update_time = ? where id = ?
                 """, newUpdateTime, id);
     }
 
     public Integer remove(String url) {
         return template.update("""
-                delete from link 
-                where url = ?
+                delete from link where url = ?
                 """, url);
     }
 
     public Integer removeById(Long id) {
         return template.update("""
-                delete from link 
-                where id = ?
+                delete from link where id = ?
                 """, id);
     }
 
