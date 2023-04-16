@@ -29,22 +29,19 @@ public class JooqSubscriptionService implements SubscriptionService {
     @Transactional
     public LinkEntity subscribe(Long chatId, URI url) {
         LinkEntity linkEntity = linkRepository.find(url.toString());
-        if (linkEntity != null) {
-            subscriptionRepository.add(chatId, linkEntity.getId());
-            return linkEntity;
-        } else {
+        if (linkEntity == null) {
             log.info("Link does not exist yet");
-            Long linkId = linkRepository.add(url.toString());
-            log.info("New link id=" + linkId);
-            log.info("New link=" + linkRepository.findById(linkId).toString());
-            try {
-                subscriptionRepository.add(linkId, chatId);
-            } catch (DataAccessException e) {
-                log.error(e.getMessage());
-                throw new InternalError("Subscription already exist", e);
-            }
-            return linkRepository.findById(linkId);
+            linkEntity = linkRepository.add(url.toString());
+            log.info("New link id=" + linkEntity.getId());
+            log.info("New link entity=" + linkEntity);
         }
+        try {
+            subscriptionRepository.add(linkEntity.getId(), chatId);
+        } catch (DataAccessException e) {
+            log.error(e.getMessage());
+            throw new InternalError("Subscription already exist", e);
+        }
+        return linkEntity;
     }
 
     @Override

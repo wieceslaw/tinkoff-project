@@ -21,12 +21,12 @@ public class JooqLinkRepository {
     private final Link link = Link.LINK;
     private final Subscription subscription = Subscription.SUBSCRIPTION;
 
-    public Long add(String url) {
+    public LinkEntity add(String url) {
         LinkEntity linkEntity = context.insertInto(link)
                 .set(link.URL, url)
-                .returning(link.ID)
+                .returning(link.fields())
                 .fetchOneInto(LinkEntity.class);
-        return linkEntity.getId();
+        return linkEntity;
     }
 
     public @Nullable LinkEntity find(String url) {
