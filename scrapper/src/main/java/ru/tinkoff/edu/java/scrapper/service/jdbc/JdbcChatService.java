@@ -33,6 +33,6 @@ public class JdbcChatService implements ChatService {
     @Transactional
     public void unregister(Long id) {
         chatRepository.removeById(id);
-        linkRepository.removeWithZeroSubscriptions();
+        linkRepository.removeWithZeroSubscribers();
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.dto.entity.LinkEntity;
 import ru.tinkoff.edu.java.scrapper.repository.JdbcLinkRepository;
-import ru.tinkoff.edu.java.scrapper.service.api.UpdateService;
+import ru.tinkoff.edu.java.scrapper.service.api.LinkService;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,13 +15,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class JdbcUpdateService implements UpdateService {
+public class JdbcLinkService implements LinkService {
     private final JdbcLinkRepository linkRepository;
 
     @Override
     @Transactional
-    public List<LinkEntity> findLinksWithLastCheckedTimeLongAgo(Integer secondsDelta) {
-        return linkRepository.findWithLastCheckedTimeLongAgo(secondsDelta);
+    public List<LinkEntity> updateLastCheckedTimeAndGet(Integer secondsDelta) {
+        return linkRepository.updateLastCheckedTimeAndGet(secondsDelta);
     }
 
     @Override

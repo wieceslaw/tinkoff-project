@@ -5,7 +5,7 @@ import ru.tinkoff.edu.java.scrapper.dto.entity.LinkEntity;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-public interface UpdateService {
-    List<LinkEntity> findLinksWithLastCheckedTimeLongAgo(Integer secondsDelta);
+public interface LinkService {
+    List<LinkEntity> updateLastCheckedTimeAndGet(Integer secondsDelta);
     void updateLink(LinkEntity linkEntity, OffsetDateTime newUpdateTime);
 }

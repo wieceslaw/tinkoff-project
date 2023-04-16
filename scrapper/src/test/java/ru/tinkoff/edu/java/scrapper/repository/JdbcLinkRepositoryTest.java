@@ -154,7 +154,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         createSubscription(chatId, linkId);
 
         // when
-        List<LinkEntity> linkEntities = linkRepository.findWithChatSubscription(chatId);
+        List<LinkEntity> linkEntities = linkRepository.findWithSubscriber(chatId);
 
         // then
         assertEquals(linkEntities.size(), 1);
@@ -168,7 +168,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
         Long chatId = 1L;
 
         // when
-        List<LinkEntity> linkEntities = linkRepository.findWithChatSubscription(chatId);
+        List<LinkEntity> linkEntities = linkRepository.findWithSubscriber(chatId);
 
         // then
         assertEquals(linkEntities.size(), 0);
@@ -252,7 +252,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
 
         // when
         int beforeCount = getAll().size();
-        int removed = linkRepository.removeWithZeroSubscriptions();
+        int removed = linkRepository.removeWithZeroSubscribers();
         int afterCount = getAll().size();
 
         // then
@@ -273,7 +273,7 @@ class JdbcLinkRepositoryTest extends IntegrationEnvironment {
 
         // when
         int beforeCount = getAll().size();
-        int removed = linkRepository.removeWithZeroSubscriptions();
+        int removed = linkRepository.removeWithZeroSubscribers();
         int afterCount = getAll().size();
 
         // then

@@ -20,19 +20,16 @@ public class GitHubWebService {
         List<String> eventsInfo = events
                 .stream()
                 .filter(event -> event.getCreatedAt().isAfter(lastUpdateTimeSaved))
-                // TODO: format created at offsetDateTime
-                .map(event -> resolveEventType(event.getType()) + " at " + event.getCreatedAt())
+                .map(event -> getEventTypeDescription(event.getType()) + " at " + event.getCreatedAt())
                 .toList();
         return new UpdatesInfo(lastEvent.getCreatedAt(), eventsInfo);
     }
 
-    private String resolveEventType(String eventType) {
-        return switch (eventType) {
-            case "CommitCommentEvent" -> "Commit was committed";
-            case "PushEvent" -> "Commit was pushed";
-            case "IssueCommentEvent" -> "Issue was commented";
-            case "PullRequestReviewCommentEvent" -> "Pull request review was commented";
-            default -> "Some update happened";
-        };
+    private String getEventTypeDescription(String eventType) {
+        try {
+            return GitHubEventType.valueOf(eventType).getDescription();
+        } catch (IllegalArgumentException ignored) {
+            return GitHubEventType.UnknownEvent.getDescription();
+        }
     }
 }

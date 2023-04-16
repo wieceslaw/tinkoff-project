@@ -66,7 +66,7 @@ public class JdbcSubscriptionService implements SubscriptionService {
 
     @Override
     public List<LinkEntity> getChatSubscriptions(Long chatId) {
-        return linkRepository.findWithChatSubscription(chatId);
+        return linkRepository.findWithSubscriber(chatId);
     }
 
     @Override
