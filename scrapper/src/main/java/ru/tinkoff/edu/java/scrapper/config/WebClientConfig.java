@@ -16,14 +16,11 @@ import ru.tinkoff.edu.java.scrapper.client.BotWebClient;
 import ru.tinkoff.edu.java.scrapper.client.GitHubWebClient;
 import ru.tinkoff.edu.java.scrapper.client.StackOverflowWebClient;
 
-@RequiredArgsConstructor
 @Configuration
 public class WebClientConfig {
-    private final ObjectMapper objectMapper;
-    private ExchangeStrategies exchangeStrategies;
+    private final ExchangeStrategies exchangeStrategies;
 
-    @PostConstruct
-    private void init() {
+    public WebClientConfig(ObjectMapper objectMapper) {
         exchangeStrategies = ExchangeStrategies
                 .builder()
                 .codecs(clientDefaultCodecsConfigurer -> {
@@ -34,17 +31,6 @@ public class WebClientConfig {
                             .defaultCodecs()
                             .jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper, MediaType.APPLICATION_JSON));
                 }).build();
-    }
-
-    private <T> T buildWebClient(String baseUrl, Class<T> client) {
-        WebClient webClient = WebClient.builder()
-                .exchangeStrategies(exchangeStrategies)
-                .baseUrl(baseUrl)
-                .build();
-        HttpServiceProxyFactory httpServiceProxyFactory = HttpServiceProxyFactory
-                .builder(WebClientAdapter.forClient(webClient))
-                .build();
-        return httpServiceProxyFactory.createClient(client);
     }
 
     @Bean
@@ -60,5 +46,16 @@ public class WebClientConfig {
     @Bean
     public BotWebClient botWebClient(ApplicationConfig config) {
         return buildWebClient(config.getBot().getUrl(), BotWebClient.class);
+    }
+
+    private <T> T buildWebClient(String baseUrl, Class<T> client) {
+        WebClient webClient = WebClient.builder()
+                .exchangeStrategies(exchangeStrategies)
+                .baseUrl(baseUrl)
+                .build();
+        HttpServiceProxyFactory httpServiceProxyFactory = HttpServiceProxyFactory
+                .builder(WebClientAdapter.forClient(webClient))
+                .build();
+        return httpServiceProxyFactory.createClient(client);
     }
 }

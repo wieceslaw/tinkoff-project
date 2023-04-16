@@ -14,34 +14,47 @@ import java.util.Objects;
         basePackages = "ru.tinkoff.edu.java.scrapper.controller"
 )
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-    private final static String notImplementedResponse = "Error handler is not implemented yet";
-    private final static String notImplementedCode = "500";
+    private static final String INPUT_ERROR_CODE = "tg-api";
+    private static final String SERVER_ERROR_CODE = "server";
+
+    private static final String INPUT_ERROR_DESCRIPTION = "Error happened while sending updates";
+    private static final String SERVER_ERROR_DESCRIPTION = "Internal error";
 
     @ExceptionHandler(IllegalArgumentException.class)
     protected ResponseEntity<ApiErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
-        return new ResponseEntity<>(
-                new ApiErrorResponse(
-                        "Wrong arguments input",
-                        "input-error",
-                        ex.toString(),
-                        ex.getMessage(),
-                        Arrays.stream(ex.getStackTrace()).map(Objects::toString).toList()
-                ),
-                HttpStatus.BAD_REQUEST
+        return buildError(
+                ex,
+                HttpStatus.BAD_REQUEST,
+                INPUT_ERROR_CODE,
+                INPUT_ERROR_DESCRIPTION
         );
     }
 
     @ExceptionHandler
-    protected ResponseEntity<ApiErrorResponse> handleNullPointerException(Exception ex) {
+    protected ResponseEntity<ApiErrorResponse> handleOtherErrors(Exception ex) {
+        return buildError(
+                ex,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                SERVER_ERROR_CODE,
+                SERVER_ERROR_DESCRIPTION
+        );
+    }
+
+    private ResponseEntity<ApiErrorResponse> buildError(
+            Exception exception,
+            HttpStatus httpStatus,
+            String code,
+            String description
+    ) {
         return new ResponseEntity<>(
                 new ApiErrorResponse(
-                        notImplementedResponse,
-                        notImplementedCode,
-                        ex.toString(),
-                        ex.getMessage(),
-                        Arrays.stream(ex.getStackTrace()).map(Objects::toString).toList()
+                        description,
+                        code,
+                        exception.toString(),
+                        exception.getMessage(),
+                        Arrays.stream(exception.getStackTrace()).map(Objects::toString).toList()
                 ),
-                HttpStatus.INTERNAL_SERVER_ERROR
+                httpStatus
         );
     }
 }

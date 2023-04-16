@@ -22,9 +22,9 @@ public class JdbcLinkRepository {
 
     private final static String ADD_QUERY = "insert into link (url) values (?)";
     private final static String FIND_QUERY = """
-                select id, url, last_check_time, last_update_time 
-                from link 
-                where url = ?
+            select id, url, last_check_time, last_update_time 
+            from link 
+            where url = ?
             """;
     private final static String FIND_BY_ID_QUERY = """
             select id, url, last_check_time, last_update_time 

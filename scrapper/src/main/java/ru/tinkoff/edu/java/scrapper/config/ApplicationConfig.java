@@ -56,6 +56,6 @@ public class ApplicationConfig {
     @Data
     public static class Bot {
         @NotBlank
-        private String url = "http://localhost";
+        private String url;
     }
 }
