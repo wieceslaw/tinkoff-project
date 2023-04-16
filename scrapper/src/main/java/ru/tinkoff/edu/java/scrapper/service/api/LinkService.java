@@ -6,6 +6,6 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 public interface LinkService {
-    List<LinkEntity> updateLastCheckedTimeAndGet(Integer secondsDelta);
+    List<LinkEntity> updateLastCheckedTimeAndGet(Integer numberOfLinks);
     void updateLink(LinkEntity linkEntity, OffsetDateTime newUpdateTime);
 }

@@ -20,8 +20,8 @@ public class JdbcLinkService implements LinkService {
 
     @Override
     @Transactional
-    public List<LinkEntity> updateLastCheckedTimeAndGet(Integer secondsDelta) {
-        return linkRepository.updateLastCheckedTimeAndGet(secondsDelta);
+    public List<LinkEntity> updateLastCheckedTimeAndGet(Integer numberOfLinks) {
+        return linkRepository.updateLastCheckedTimeAndGet(numberOfLinks);
     }
 
     @Override

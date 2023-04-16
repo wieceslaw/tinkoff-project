@@ -35,7 +35,7 @@ public class LinkUpdatesService {
 
     private List<LinkEntity> getUncheckedLinks() {
         return linkService.updateLastCheckedTimeAndGet(
-                config.getScheduler().getCheckSecondsDelay()
+                config.getScheduler().getNumberOfCheckableLinks()
         );
     }
 

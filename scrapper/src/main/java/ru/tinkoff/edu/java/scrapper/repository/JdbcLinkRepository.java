@@ -41,8 +41,11 @@ public class JdbcLinkRepository {
     private final static String UPDATE_LAST_CHECKED_TIME_AND_GET = """
             update link
             set last_check_time = now()
-            where now() - last_check_time > ?::interval
-            returning id, url, last_check_time, last_update_time
+            where id in (select id
+                         from link
+                         order by last_check_time
+                         limit ?)
+            returning id, url, last_check_time, last_update_time;
             """;
     private final static String UPDATE_LAST_UPDATE_TIME_QUERY = "update link set last_update_time = ? where id = ?";
     private final static String REMOVE_QUERY = "delete from link where url = ?";
@@ -78,8 +81,8 @@ public class JdbcLinkRepository {
         return template.query(FIND_WITH_SUBSCRIBER_QUERY, mapper, chatId);
     }
 
-    public List<LinkEntity> updateLastCheckedTimeAndGet(Integer secondsDelta) {
-        return template.query(UPDATE_LAST_CHECKED_TIME_AND_GET, mapper, secondsDelta.toString() + " seconds");
+    public List<LinkEntity> updateLastCheckedTimeAndGet(Integer numberOfLinks) {
+        return template.query(UPDATE_LAST_CHECKED_TIME_AND_GET, mapper, numberOfLinks);
     }
 
     public Integer updateLastUpdateTime(Long id, OffsetDateTime newUpdateTime) {
