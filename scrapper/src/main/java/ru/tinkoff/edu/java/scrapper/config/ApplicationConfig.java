@@ -35,7 +35,7 @@ public class ApplicationConfig {
         @NotNull
         private Duration interval;
         @NotNull
-        private Integer numberOfCheckableLinks = 5;
+        private Integer numberOfCheckableLinks;
     }
 
     @Validated

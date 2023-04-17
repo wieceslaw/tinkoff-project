@@ -13,7 +13,6 @@ import ru.tinkoff.edu.java.scrapper.service.api.ChatService;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class JdbcChatService implements ChatService {
     private final JdbcChatRepository chatRepository;
     private final JdbcLinkRepository linkRepository;
