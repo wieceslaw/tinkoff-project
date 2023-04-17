@@ -11,10 +11,10 @@ public class GitHubEventResponse {
     private String type;
     @JsonProperty("created_at")
     private OffsetDateTime createdAt;
-    private String repo;
+    private String repoName;
 
-    @JsonProperty
-    private void unpackRepoName(Map<String, String> repo) {
-        this.repo = repo.get("name");
+    @JsonProperty("repo")
+    private void unpackRepoName(Map<String, Object> repo) {
+        this.repoName = (String) repo.get("name");
     }
 }

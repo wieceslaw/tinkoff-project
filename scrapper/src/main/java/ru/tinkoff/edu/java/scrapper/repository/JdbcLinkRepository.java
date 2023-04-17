@@ -1,6 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.repository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -14,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class JdbcLinkRepository {
@@ -41,10 +43,7 @@ public class JdbcLinkRepository {
     private final static String UPDATE_LAST_CHECKED_TIME_AND_GET = """
             update link
             set last_check_time = now()
-            where id in (select id
-                         from link
-                         order by last_check_time
-                         limit ?)
+            where ? > last_check_time
             returning id, url, last_check_time, last_update_time;
             """;
     private final static String UPDATE_LAST_UPDATE_TIME_QUERY = "update link set last_update_time = ? where id = ?";
@@ -81,11 +80,12 @@ public class JdbcLinkRepository {
         return template.query(FIND_WITH_SUBSCRIBER_QUERY, mapper, chatId);
     }
 
-    public List<LinkEntity> updateLastCheckedTimeAndGet(Integer numberOfLinks) {
-        return template.query(UPDATE_LAST_CHECKED_TIME_AND_GET, mapper, numberOfLinks);
+    public List<LinkEntity> updateLastCheckedTimeAndGet(OffsetDateTime shouldBeCheckedAfter) {
+        return template.query(UPDATE_LAST_CHECKED_TIME_AND_GET, mapper, shouldBeCheckedAfter);
     }
 
     public Integer updateLastUpdateTime(Long id, OffsetDateTime newUpdateTime) {
+        log.info(newUpdateTime.toString());
         return template.update(UPDATE_LAST_UPDATE_TIME_QUERY, newUpdateTime, id);
     }
 
