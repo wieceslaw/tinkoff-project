@@ -29,6 +29,18 @@ public class JooqLinkRepository {
         return linkEntity;
     }
 
+    public LinkEntity subscribe(String url, Long chatId) {
+        LinkEntity linkEntity = context.insertInto(link)
+                .set(link.URL, url)
+                .returning(link.fields())
+                .fetchOneInto(LinkEntity.class);
+        context.insertInto(subscription)
+                .set(subscription.LINK_ID, linkEntity.getId())
+                .set(subscription.CHAT_ID, chatId)
+                .execute();
+        return linkEntity;
+    }
+
     public @Nullable LinkEntity find(String url) {
         return context.select(link.fields())
                 .from(link)

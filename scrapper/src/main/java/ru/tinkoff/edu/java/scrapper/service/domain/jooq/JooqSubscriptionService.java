@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.exception.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.dto.entity.ChatEntity;
 import ru.tinkoff.edu.java.scrapper.dto.entity.LinkEntity;
@@ -26,21 +27,22 @@ public class JooqSubscriptionService implements SubscriptionService {
     private final JooqSubscriptionRepository subscriptionRepository;
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public LinkEntity subscribe(Long chatId, URI url) {
-        LinkEntity linkEntity = linkRepository.find(url.toString());
-        if (linkEntity == null) {
-            log.info("Link does not exist yet");
-            linkEntity = linkRepository.add(url.toString());
-            log.info("New link id=" + linkEntity.getId());
-            log.info("New link entity=" + linkEntity);
-        }
-        try {
-            subscriptionRepository.add(linkEntity.getId(), chatId);
-        } catch (DataAccessException e) {
-            log.error(e.getMessage());
-            throw new InternalError("Subscription already exist", e);
-        }
+        LinkEntity linkEntity = linkRepository.subscribe(url.toString(), chatId);
+//        LinkEntity linkEntity = linkRepository.find(url.toString());
+//        if (linkEntity == null) {
+//            log.info("Link does not exist yet");
+//            linkEntity = linkRepository.add(url.toString());
+//            log.info("New link id=" + linkEntity.getId());
+//            log.info("New link entity=" + linkEntity);
+//        }
+//        try {
+//            subscriptionRepository.add(linkEntity.getId(), chatId);
+//        } catch (DataAccessException e) {
+//            log.error(e.getMessage());
+//            throw new InternalError("Subscription already exist", e);
+//        }
         return linkEntity;
     }
 
