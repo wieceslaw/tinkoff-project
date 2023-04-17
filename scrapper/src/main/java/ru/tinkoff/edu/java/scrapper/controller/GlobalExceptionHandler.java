@@ -14,10 +14,10 @@ import java.util.Objects;
         basePackages = "ru.tinkoff.edu.java.scrapper.controller"
 )
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-    private static final String INPUT_ERROR_CODE = "tg-api";
+    private static final String CLIENT_ERROR_CODE = "client";
     private static final String SERVER_ERROR_CODE = "server";
 
-    private static final String INPUT_ERROR_DESCRIPTION = "Error happened while sending updates";
+    private static final String CLIENT_ERROR_DESCRIPTION = "Wrong client action";
     private static final String SERVER_ERROR_DESCRIPTION = "Internal error";
 
     @ExceptionHandler(IllegalArgumentException.class)
@@ -25,8 +25,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return buildError(
                 ex,
                 HttpStatus.BAD_REQUEST,
-                INPUT_ERROR_CODE,
-                INPUT_ERROR_DESCRIPTION
+                CLIENT_ERROR_CODE,
+                CLIENT_ERROR_DESCRIPTION
         );
     }
 

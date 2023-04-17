@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.dto.entity.ChatEntity;
 import ru.tinkoff.edu.java.scrapper.dto.entity.LinkEntity;
-import ru.tinkoff.edu.java.scrapper.exception.InternalError;
 import ru.tinkoff.edu.java.scrapper.repository.JdbcChatRepository;
 import ru.tinkoff.edu.java.scrapper.repository.JdbcLinkRepository;
 import ru.tinkoff.edu.java.scrapper.repository.JdbcSubscriptionRepository;
@@ -38,9 +37,8 @@ public class JdbcSubscriptionService implements SubscriptionService {
             try {
                 subscriptionRepository.add(chatId, linkId);
             } catch (DuplicateKeyException e) {
-                // TODO?: change exception
                 log.error(e.getMessage());
-                throw new InternalError("Subscription already exist", e);
+                throw new IllegalArgumentException("Subscription already exist", e);
             }
             return linkRepository.findById(linkId);
         }
@@ -59,8 +57,7 @@ public class JdbcSubscriptionService implements SubscriptionService {
             return linkEntity;
         } catch (EmptyResultDataAccessException e) {
             log.error(e.getMessage());
-            // TODO?: change exception
-            throw new InternalError("Link not found", e);
+            throw new IllegalArgumentException("Link not found", e);
         }
     }
 
