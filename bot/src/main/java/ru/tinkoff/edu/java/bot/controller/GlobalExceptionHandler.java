@@ -53,7 +53,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                         code,
                         exception.toString(),
                         exception.getMessage(),
-                        Arrays.stream(exception.getStackTrace()).map(Objects::toString).toList()
+                        Arrays.stream(exception.getStackTrace())
+                                .map(Objects::toString)
+                                .toList()
                 ),
                 httpStatus
         );
