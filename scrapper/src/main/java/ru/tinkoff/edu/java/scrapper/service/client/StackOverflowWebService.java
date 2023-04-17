@@ -1,5 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.service.client;
 
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.scrapper.client.StackOverflowWebClient;
@@ -16,14 +17,16 @@ import java.util.stream.Collectors;
 public class StackOverflowWebService {
     private final StackOverflowWebClient stackOverflowWebClient;
 
-    public UpdatesInfo fetchQuestionUpdates(Integer id) {
-        StackOverflowQuestionResponse response = stackOverflowWebClient
-                .fetchQuestion(id)
-                .map(item -> item.items().get(0)).block();
-        return new UpdatesInfo(
-                response.lastActivityDate(),
-                List.of("Check out new update from " + response.title())
-        );
+    public @Nullable UpdatesInfo fetchQuestionUpdates(Integer id) {
+        StackOverflowQuestionsResponse response = stackOverflowWebClient.fetchQuestion(id).block();
+        if (!response.items().isEmpty()) {
+            StackOverflowQuestionResponse questionResponse = response.items().get(0);
+            return new UpdatesInfo(
+                    questionResponse.lastActivityDate(),
+                    List.of("Check out new update from " + questionResponse.title())
+            );
+        }
+        return null;
     }
 
     public List<StackOverflowQuestionResponse> fetchQuestions(List<Integer> ids) {

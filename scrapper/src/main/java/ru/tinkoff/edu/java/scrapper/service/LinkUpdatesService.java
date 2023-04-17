@@ -1,5 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.service;
 
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
@@ -39,7 +40,7 @@ public class LinkUpdatesService {
         );
     }
 
-    private UpdatesInfo fetchUpdates(LinkEntity link) {
+    private @Nullable UpdatesInfo fetchUpdates(LinkEntity link) {
         LinkData linkData = handlerChain.handle(link.getUrl());
         return switch (linkData) {
             case null -> throw new InternalError("Malicious link");
@@ -62,7 +63,9 @@ public class LinkUpdatesService {
     public void updateLinks() {
         getUncheckedLinks().forEach(link -> {
             UpdatesInfo updatesInfo = fetchUpdates(link);
-            if (link.getLastUpdateTime() == null || link.getLastUpdateTime().isBefore(updatesInfo.lastUpdateTime())) {
+            if (updatesInfo != null &&
+                    (link.getLastUpdateTime() == null ||
+                            link.getLastUpdateTime().isBefore(updatesInfo.lastUpdateTime()))) {
                 sendUpdates(link, updatesInfo);
             }
         });

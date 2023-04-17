@@ -1,5 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.service.client;
 
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.scrapper.client.GitHubWebClient;
@@ -14,15 +15,18 @@ import java.util.List;
 public class GitHubWebService {
     private final GitHubWebClient gitHubWebClient;
 
-    public UpdatesInfo fetchEventsUpdates(String owner, String repo, OffsetDateTime lastUpdateTimeSaved) {
+    public @Nullable UpdatesInfo fetchEventsUpdates(String owner, String repo, OffsetDateTime lastUpdateTimeSaved) {
         List<GitHubEventResponse> events = gitHubWebClient.fetchEvents(owner, repo).block();
-        GitHubEventResponse lastEvent = events.get(0);
-        List<String> eventsInfo = events
-                .stream()
-                .filter(event -> event.getCreatedAt().isAfter(lastUpdateTimeSaved))
-                .map(event -> getEventTypeDescription(event.getType()) + " at " + event.getCreatedAt())
-                .toList();
-        return new UpdatesInfo(lastEvent.getCreatedAt(), eventsInfo);
+        if (!events.isEmpty()) {
+            GitHubEventResponse lastEvent = events.get(0);
+            List<String> eventsInfo = events
+                    .stream()
+                    .filter(event -> event.getCreatedAt().isAfter(lastUpdateTimeSaved))
+                    .map(event -> getEventTypeDescription(event.getType()) + " at " + event.getCreatedAt())
+                    .toList();
+            return new UpdatesInfo(lastEvent.getCreatedAt(), eventsInfo);
+        }
+        return null;
     }
 
     private String getEventTypeDescription(String eventType) {
