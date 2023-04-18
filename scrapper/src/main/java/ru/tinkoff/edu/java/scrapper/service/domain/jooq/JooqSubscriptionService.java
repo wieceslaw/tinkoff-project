@@ -2,12 +2,11 @@ package ru.tinkoff.edu.java.scrapper.service.domain.jooq;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.exception.DataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.dto.entity.ChatEntity;
 import ru.tinkoff.edu.java.scrapper.dto.entity.LinkEntity;
-import ru.tinkoff.edu.java.scrapper.exception.InternalError;
 import ru.tinkoff.edu.java.scrapper.repository.jooq.JooqChatRepository;
 import ru.tinkoff.edu.java.scrapper.repository.jooq.JooqLinkRepository;
 import ru.tinkoff.edu.java.scrapper.repository.jooq.JooqSubscriptionRepository;
@@ -19,30 +18,20 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class JooqSubscriptionService implements SubscriptionService {
     private final JooqLinkRepository linkRepository;
     private final JooqChatRepository chatRepository;
     private final JooqSubscriptionRepository subscriptionRepository;
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public LinkEntity subscribe(Long chatId, URI url) {
-        LinkEntity linkEntity = linkRepository.subscribe(url.toString(), chatId);
-//        LinkEntity linkEntity = linkRepository.find(url.toString());
-//        if (linkEntity == null) {
-//            log.info("Link does not exist yet");
-//            linkEntity = linkRepository.add(url.toString());
-//            log.info("New link id=" + linkEntity.getId());
-//            log.info("New link entity=" + linkEntity);
-//        }
-//        try {
-//            subscriptionRepository.add(linkEntity.getId(), chatId);
-//        } catch (DataAccessException e) {
-//            log.error(e.getMessage());
-//            throw new InternalError("Subscription already exist", e);
-//        }
-        return linkEntity;
+        try {
+            return linkRepository.subscribe(url.toString(), chatId);
+        } catch (DataAccessException e) {
+            log.error(e.getMessage());
+            throw new IllegalArgumentException("Subscription already exist", e);
+        }
     }
 
     @Override
@@ -58,16 +47,18 @@ public class JooqSubscriptionService implements SubscriptionService {
             return linkEntity;
         } else {
             log.error("Link not found");
-            throw new InternalError("Link not found");
+            throw new IllegalArgumentException("Link not found");
         }
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<LinkEntity> getChatSubscriptions(Long chatId) {
         return linkRepository.findWithChatSubscription(chatId);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ChatEntity> getLinkSubscribers(Long linkId) {
         return chatRepository.findAllSubscribers(linkId);
     }

@@ -18,7 +18,6 @@ import java.util.List;
 @Slf4j
 //@Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class JdbcSubscriptionService implements SubscriptionService {
     private final JdbcSubscriptionRepository subscriptionRepository;
     private final JdbcLinkRepository linkRepository;
@@ -61,11 +60,13 @@ public class JdbcSubscriptionService implements SubscriptionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<LinkEntity> getChatSubscriptions(Long chatId) {
         return linkRepository.findWithSubscriber(chatId);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ChatEntity> getLinkSubscribers(Long linkId) {
         return chatRepository.findAllSubscribers(linkId);
     }

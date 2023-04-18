@@ -3,7 +3,6 @@ package ru.tinkoff.edu.java.scrapper.repository.jooq;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
-import org.jooq.types.DayToSecond;
 import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.domain.jooq.tables.Link;
 import ru.tinkoff.edu.java.scrapper.domain.jooq.tables.Subscription;
@@ -22,19 +21,14 @@ public class JooqLinkRepository {
     private final Link link = Link.LINK;
     private final Subscription subscription = Subscription.SUBSCRIPTION;
 
-    public LinkEntity add(String url) {
-        LinkEntity linkEntity = context.insertInto(link)
-                .set(link.URL, url)
-                .returning(link.fields())
-                .fetchOneInto(LinkEntity.class);
-        return linkEntity;
-    }
-
     public LinkEntity subscribe(String url, Long chatId) {
-        LinkEntity linkEntity = context.insertInto(link)
-                .set(link.URL, url)
-                .returning(link.fields())
-                .fetchOneInto(LinkEntity.class);
+        LinkEntity linkEntity = find(url);
+        if (linkEntity == null) {
+            linkEntity = context.insertInto(link)
+                    .set(link.URL, url)
+                    .returning(link.fields())
+                    .fetchOneInto(LinkEntity.class);
+        }
         context.insertInto(subscription)
                 .set(subscription.LINK_ID, linkEntity.getId())
                 .set(subscription.CHAT_ID, chatId)
@@ -70,10 +64,10 @@ public class JooqLinkRepository {
                 .fetchInto(LinkEntity.class);
     }
 
-    public List<LinkEntity> findWithLastCheckedTimeLongAgo(Integer secondsDelta) {
+    public List<LinkEntity> findWithLastCheckedTimeLongAgo(OffsetDateTime shouldBeCheckedAfter) {
         return context.update(link)
                 .set(link.LAST_CHECK_TIME, currentOffsetDateTime())
-                .where(currentOffsetDateTime().greaterThan(link.LAST_CHECK_TIME.add(new DayToSecond(0, 0, 0, secondsDelta))))
+                .where(link.LAST_CHECK_TIME.lessThan(shouldBeCheckedAfter))
                 .returning(link.fields())
                 .fetchInto(LinkEntity.class);
     }

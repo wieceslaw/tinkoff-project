@@ -6,22 +6,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.dto.entity.LinkEntity;
 import ru.tinkoff.edu.java.scrapper.repository.jooq.JooqLinkRepository;
-import ru.tinkoff.edu.java.scrapper.service.domain.api.UpdateService;
+import ru.tinkoff.edu.java.scrapper.service.domain.api.LinkService;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class JooqUpdateService implements UpdateService {
+public class JooqUpdateService implements LinkService {
     private final JooqLinkRepository linkRepository;
 
     @Override
     @Transactional
-    public List<LinkEntity> findLinksWithLastCheckedTimeLongAgo(Integer secondsDelta) {
-        return linkRepository.findWithLastCheckedTimeLongAgo(secondsDelta);
+    public List<LinkEntity> updateLastCheckedTimeAndGet(Duration linkToBeCheckedInterval) {
+        return linkRepository.findWithLastCheckedTimeLongAgo(
+                OffsetDateTime.now().plusNanos(linkToBeCheckedInterval.toNanos())
+        );
     }
 
     @Override

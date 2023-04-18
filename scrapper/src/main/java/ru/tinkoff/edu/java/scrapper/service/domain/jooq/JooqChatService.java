@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.tinkoff.edu.java.scrapper.exception.InternalError;
 import ru.tinkoff.edu.java.scrapper.repository.jooq.JooqChatRepository;
 import ru.tinkoff.edu.java.scrapper.repository.jooq.JooqLinkRepository;
 import ru.tinkoff.edu.java.scrapper.service.domain.api.ChatService;
@@ -12,7 +11,6 @@ import ru.tinkoff.edu.java.scrapper.service.domain.api.ChatService;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class JooqChatService implements ChatService {
     private final JooqLinkRepository linkRepository;
     private final JooqChatRepository chatRepository;
@@ -24,7 +22,7 @@ public class JooqChatService implements ChatService {
             chatRepository.add(id);
         } else {
             log.error("Chat duplication error");
-            throw new InternalError("Chat already registered");
+            throw new IllegalArgumentException("Chat already registered");
         }
     }
 
