@@ -63,9 +63,11 @@ public class LinkUpdatesService {
     public void updateLinks() {
         getUncheckedLinks().forEach(link -> {
             UpdatesInfo updatesInfo = fetchUpdates(link);
-            if (updatesInfo != null &&
+
+            boolean shouldSendUpdate = updatesInfo != null &&
                     (link.getLastUpdateTime() == null ||
-                            link.getLastUpdateTime().isBefore(updatesInfo.lastUpdateTime()))) {
+                            link.getLastUpdateTime().isBefore(updatesInfo.lastUpdateTime()));
+            if (shouldSendUpdate) {
                 sendUpdates(link, updatesInfo);
             }
         });
