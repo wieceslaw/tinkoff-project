@@ -3,6 +3,7 @@ package ru.tinkoff.edu.java.scrapper.service.domain.jpa;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.dto.entity.ChatEntity;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaChatRepository;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaLinkRepository;
@@ -16,6 +17,7 @@ public class JpaChatService implements ChatService {
     private final JpaLinkRepository linkRepository;
 
     @Override
+    @Transactional
     public void register(Long id) {
         try {
             chatRepository.saveAndFlush(new ChatEntity(id));
@@ -26,6 +28,7 @@ public class JpaChatService implements ChatService {
     }
 
     @Override
+    @Transactional
     public void unregister(Long id) {
         chatRepository.deleteById(id);
         linkRepository.deleteWithZeroSubscribers();

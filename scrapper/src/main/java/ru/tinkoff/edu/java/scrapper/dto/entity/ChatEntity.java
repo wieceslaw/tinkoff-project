@@ -19,8 +19,8 @@ public class ChatEntity {
     @ManyToMany
     @JoinTable(
             name = "subscription",
-            joinColumns = @JoinColumn(name = "link_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "id")
+            joinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "link_id", referencedColumnName = "id")
     )
     private List<LinkEntity> subscriptions;
 

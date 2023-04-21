@@ -17,6 +17,7 @@ app:
     url: "https://api.stackexchange.com/2.3"
   bot:
     url: "http://localhost:8083"
+  databaseAccessType: "jpa"
 
 spring:
   datasource:

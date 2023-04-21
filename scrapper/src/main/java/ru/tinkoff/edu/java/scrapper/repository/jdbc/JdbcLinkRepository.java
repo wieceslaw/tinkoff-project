@@ -44,7 +44,7 @@ public class JdbcLinkRepository {
             update link
             set last_check_time = now()
             where ? > last_check_time
-            returning id, url, last_check_time, last_update_time;
+            returning id, url, last_check_time, last_update_time
             """;
     private final static String UPDATE_LAST_UPDATE_TIME_QUERY = "update link set last_update_time = ? where id = ?";
     private final static String REMOVE_QUERY = "delete from link where url = ?";

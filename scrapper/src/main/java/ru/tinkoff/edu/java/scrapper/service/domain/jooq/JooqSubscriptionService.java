@@ -3,7 +3,6 @@ package ru.tinkoff.edu.java.scrapper.service.domain.jooq;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.exception.DataAccessException;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.dto.model.Chat;
 import ru.tinkoff.edu.java.scrapper.dto.model.Link;
@@ -16,7 +15,6 @@ import java.net.URI;
 import java.util.List;
 
 @Slf4j
-@Service
 @RequiredArgsConstructor
 public class JooqSubscriptionService implements SubscriptionService {
     private final JooqLinkRepository linkRepository;
