@@ -1,13 +1,17 @@
 package ru.tinkoff.edu.java.scrapper.dto.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "subscription")
+@IdClass(SubscriptionPk.class)
 public class SubscriptionEntity {
+    @Id
     private Long chatId;
+    @Id
     private Long linkId;
 }
