@@ -4,9 +4,6 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <include relativeToChangelogFile="true" file="/scripts/01-04-2023-CRS-1_create_chat_table.sql"/>
-    <include relativeToChangelogFile="true" file="/scripts/03-04-2023-CRS-2_create_link_table.sql"/>
-    <include relativeToChangelogFile="true" file="/scripts/04-04-2023-CRS-3_create_subscription_table.sql"/>
-    <include relativeToChangelogFile="true" file="/scripts/08-04-2023-CRS-4_add_primary_key_subscription.sql"/>
-    
+    <includeAll path="scripts" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>

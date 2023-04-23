@@ -1,10 +1,14 @@
+package ru.tinkoff.edu.java.scrapper;
+
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 import java.util.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 class IntegrationEnvironmentTest extends IntegrationEnvironment {
