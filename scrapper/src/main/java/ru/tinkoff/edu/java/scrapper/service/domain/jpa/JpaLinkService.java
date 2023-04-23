@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.dto.entity.LinkEntity;
 import ru.tinkoff.edu.java.scrapper.dto.model.Link;
+import ru.tinkoff.edu.java.scrapper.exception.InternalError;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaLinkRepository;
 import ru.tinkoff.edu.java.scrapper.service.domain.api.LinkService;
 
@@ -21,8 +22,9 @@ public class JpaLinkService implements LinkService {
     @Override
     @Transactional
     public List<Link> updateLastCheckedTimeAndGet(Duration linkToBeCheckedInterval) {
+        log.info(OffsetDateTime.now().minusNanos(linkToBeCheckedInterval.toNanos()).toString());
         return linkRepository.updateLastCheckedTimeAndGet(
-                        OffsetDateTime.now().plusNanos(linkToBeCheckedInterval.toNanos())
+                        OffsetDateTime.now().minusNanos(linkToBeCheckedInterval.toNanos())
                 ).stream()
                 .map(link -> new Link(
                         link.getId(),
@@ -41,7 +43,7 @@ public class JpaLinkService implements LinkService {
             linkEntity.setLastUpdateTime(newUpdateTime);
             linkRepository.saveAndFlush(linkEntity);
         } else {
-            throw new IllegalArgumentException("Link not found");
+            throw new InternalError("Link does not exist");
         }
     }
 }

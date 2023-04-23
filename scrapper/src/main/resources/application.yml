@@ -10,7 +10,7 @@ management:
 app:
   scheduler:
     interval: 10000
-    link-to-be-checked-interval: 90000
+    link-to-be-checked-interval: 600000
   github:
     url: "https://api.github.com"
   stackoverflow:

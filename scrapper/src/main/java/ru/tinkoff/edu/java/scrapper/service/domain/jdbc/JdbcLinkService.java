@@ -20,7 +20,7 @@ public class JdbcLinkService implements LinkService {
     @Transactional
     public List<Link> updateLastCheckedTimeAndGet(Duration linkToBeCheckedInterval) {
         return linkRepository.updateLastCheckedTimeAndGet(
-                OffsetDateTime.now().plusNanos(linkToBeCheckedInterval.toNanos())
+                OffsetDateTime.now().minusNanos(linkToBeCheckedInterval.toNanos())
         );
     }
 

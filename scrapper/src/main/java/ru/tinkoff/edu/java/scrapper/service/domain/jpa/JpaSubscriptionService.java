@@ -35,6 +35,9 @@ public class JpaSubscriptionService implements SubscriptionService {
         LinkEntity linkEntity = linkEntityOptional.orElseGet(
                 () -> linkRepository.saveAndFlush(new LinkEntity(url.toString()))
         );
+        if (subscriptionRepository.existsById(new SubscriptionPk(chatId, linkEntity.getId()))) {
+            throw new IllegalArgumentException("Subscription already exist");
+        }
         subscriptionRepository.saveAndFlush(new SubscriptionEntity(chatId, linkEntity.getId()));
         return new Link(
                 linkEntity.getId(),
@@ -56,6 +59,10 @@ public class JpaSubscriptionService implements SubscriptionService {
         }
         LinkEntity linkEntity = linkEntityOptional.get();
         subscriptionRepository.deleteById(new SubscriptionPk(chatId, linkEntity.getId()));
+        Integer subscriptionsCount = subscriptionRepository.countByLinkId(linkEntity.getId());
+        if (subscriptionsCount == 0) {
+            linkRepository.deleteById(linkEntity.getId());
+        }
         return new Link(
                 linkEntity.getId(),
                 linkEntity.getUrl(),
@@ -67,7 +74,6 @@ public class JpaSubscriptionService implements SubscriptionService {
     @Override
     @Transactional(readOnly = true)
     public List<Link> getChatSubscriptions(Long chatId) {
-        log.info("Get chat subscriptions");
         Optional<ChatEntity> chatEntityOptional = chatRepository.findById(chatId);
         if (chatEntityOptional.isEmpty()) {
             throw new IllegalArgumentException("Chat does not exist");

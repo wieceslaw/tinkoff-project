@@ -7,4 +7,5 @@ import ru.tinkoff.edu.java.scrapper.dto.entity.SubscriptionPk;
 
 @Repository
 public interface JpaSubscriptionRepository extends JpaRepository<SubscriptionEntity, SubscriptionPk> {
+    Integer countByLinkId(Long linkId);
 }

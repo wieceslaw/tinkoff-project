@@ -19,7 +19,7 @@ public class JooqLinkService implements LinkService {
     @Transactional
     public List<Link> updateLastCheckedTimeAndGet(Duration linkToBeCheckedInterval) {
         return linkRepository.findWithLastCheckedTimeLongAgo(
-                OffsetDateTime.now().plusNanos(linkToBeCheckedInterval.toNanos())
+                OffsetDateTime.now().minusNanos(linkToBeCheckedInterval.toNanos())
         );
     }
 

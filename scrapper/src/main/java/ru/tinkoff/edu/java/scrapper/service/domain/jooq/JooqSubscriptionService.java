@@ -15,7 +15,7 @@ import java.net.URI;
 import java.util.List;
 
 @Slf4j
-@RequiredArgsConstructor
+    @RequiredArgsConstructor
 public class JooqSubscriptionService implements SubscriptionService {
     private final JooqLinkRepository linkRepository;
     private final JooqChatRepository chatRepository;

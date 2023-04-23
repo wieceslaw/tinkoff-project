@@ -34,6 +34,20 @@ public class LinkUpdatesService {
     private final StackOverflowWebService stackOverflowWebService;
     private final BotWebService botWebService;
 
+    public void updateLinks() {
+        List<Link> uncheckedLinks = getUncheckedLinks();
+        log.info(uncheckedLinks.stream().map(Link::toString).toList().toString());
+        uncheckedLinks.forEach(link -> {
+            UpdatesInfo updatesInfo = fetchUpdates(link);
+            boolean shouldSendUpdate = updatesInfo != null &&
+                    (link.getLastUpdateTime() == null ||
+                            link.getLastUpdateTime().isBefore(updatesInfo.lastUpdateTime()));
+            if (shouldSendUpdate) {
+                sendUpdates(link, updatesInfo);
+            }
+        });
+    }
+
     private List<Link> getUncheckedLinks() {
         return linkService.updateLastCheckedTimeAndGet(
                 config.getScheduler().getLinkToBeCheckedInterval()
@@ -58,18 +72,5 @@ public class LinkUpdatesService {
                 Strings.join(updatesInfo.updates(), '\n'),
                 subscriptionService.getChatsIds(link.getId())
         ));
-    }
-
-    public void updateLinks() {
-        getUncheckedLinks().forEach(link -> {
-            UpdatesInfo updatesInfo = fetchUpdates(link);
-
-            boolean shouldSendUpdate = updatesInfo != null &&
-                    (link.getLastUpdateTime() == null ||
-                            link.getLastUpdateTime().isBefore(updatesInfo.lastUpdateTime()));
-            if (shouldSendUpdate) {
-                sendUpdates(link, updatesInfo);
-            }
-        });
     }
 }
