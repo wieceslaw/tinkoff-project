@@ -2,7 +2,6 @@ package ru.tinkoff.edu.java.scrapper.service.domain.jpa;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.dto.entity.ChatEntity;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaChatRepository;
@@ -19,17 +18,18 @@ public class JpaChatService implements ChatService {
     @Override
     @Transactional
     public void register(Long id) {
-        try {
-            chatRepository.saveAndFlush(new ChatEntity(id));
-        } catch (DuplicateKeyException e) {
-            log.error(e.getMessage());
-            throw new IllegalArgumentException("Chat already registered", e);
+        if (chatRepository.existsById(id)) {
+            throw new IllegalArgumentException("Chat already registered");
         }
+        chatRepository.saveAndFlush(new ChatEntity(id));
     }
 
     @Override
     @Transactional
     public void unregister(Long id) {
+        if (!chatRepository.existsById(id)) {
+            throw new IllegalArgumentException("Chat does not exist");
+        }
         chatRepository.deleteById(id);
         linkRepository.deleteWithZeroSubscribers();
     }
