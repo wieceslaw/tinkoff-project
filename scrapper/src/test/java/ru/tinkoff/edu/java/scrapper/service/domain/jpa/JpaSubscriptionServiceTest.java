@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.IntegrationEnvironment;
 import ru.tinkoff.edu.java.scrapper.dto.model.Chat;
@@ -47,18 +48,17 @@ class JpaSubscriptionServiceTest extends IntegrationEnvironment {
     @Rollback
     void subscribe__linkDoesNotExist_createsLinkAndSubscription() {
         // given
-        Long chatId = 1L;
-        Long linkId = 1L;
+        Long chatId = 5L;
         String url = "https://github.com/Wieceslaw/tinkoff-project/";
         helper.addChat(chatId);
-        assertNull(helper.getLinkById(linkId));
 
         // when
-        subscriptionService.subscribe(chatId, URI.create(url));
+        Link link = subscriptionService.subscribe(chatId, URI.create(url));
 
         // then
-        // assertNotNull(helper.getSubscriptionById(chatId, linkId), "Subscription not null"); // Transaction error?
-        // assertNotNull(helper.getLinkById(linkId), "Link not null"); // Transaction error?
+        assertNotNull(helper.getChatById(chatId), "Chat not null");
+        assertNotNull(helper.getLinkById(link.getId()), "Link not null"); // Transaction error?
+        assertNotNull(helper.getSubscriptionById(chatId, link.getId()), "Subscription not null"); // Transaction error?
     }
 
     @Test
@@ -153,7 +153,7 @@ class JpaSubscriptionServiceTest extends IntegrationEnvironment {
 
         // then
         assertNull(helper.getSubscriptionById(chatId, linkId));
-        // assertNull(helper.getLinkById(linkId)); // Transaction error?
+        assertNull(helper.getLinkById(linkId));
     }
 
     @Test
