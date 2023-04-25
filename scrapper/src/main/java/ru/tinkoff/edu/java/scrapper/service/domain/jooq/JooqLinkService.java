@@ -25,7 +25,7 @@ public class JooqLinkService implements LinkService {
 
     @Override
     @Transactional
-    public void updateLink(Link link, OffsetDateTime newUpdateTime) {
-        linkRepository.updateLastUpdateTime(link.getId(), newUpdateTime);
+    public void updateLinkLastUpdateTime(Long id, OffsetDateTime newUpdateTime) {
+        linkRepository.updateLastUpdateTime(id, newUpdateTime);
     }
 }

@@ -65,7 +65,7 @@ public class LinkUpdatesService {
     }
 
     private void sendUpdates(Link link, UpdatesInfo updatesInfo) {
-        linkService.updateLink(link, updatesInfo.lastUpdateTime());
+        linkService.updateLinkLastUpdateTime(link.getId(), updatesInfo.lastUpdateTime());
         botWebService.sendUpdate(new LinkUpdateRequest(
                 link.getId(),
                 link.getUrl(),

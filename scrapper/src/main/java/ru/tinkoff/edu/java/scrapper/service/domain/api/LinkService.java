@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface LinkService {
     List<Link> updateLastCheckedTimeAndGet(Duration linkToBeCheckedInterval);
-    void updateLink(Link link, OffsetDateTime newUpdateTime);
+    void updateLinkLastUpdateTime(Long id, OffsetDateTime newUpdateTime);
 }

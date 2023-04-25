@@ -36,14 +36,13 @@ public class JpaLinkService implements LinkService {
 
     @Override
     @Transactional
-    public void updateLink(Link link, OffsetDateTime newUpdateTime) {
-        Optional<LinkEntity> linkEntityOptional = linkRepository.findById(link.getId());
-        if (linkEntityOptional.isPresent()) {
-            LinkEntity linkEntity = linkEntityOptional.get();
-            linkEntity.setLastUpdateTime(newUpdateTime);
-            linkRepository.saveAndFlush(linkEntity);
-        } else {
+    public void updateLinkLastUpdateTime(Long id, OffsetDateTime newUpdateTime) {
+        Optional<LinkEntity> linkEntityOptional = linkRepository.findById(id);
+        if (linkEntityOptional.isEmpty()) {
             throw new InternalError("Link does not exist");
         }
+        LinkEntity linkEntity = linkEntityOptional.get();
+        linkEntity.setLastUpdateTime(newUpdateTime);
+        linkRepository.saveAndFlush(linkEntity);
     }
 }

@@ -8,10 +8,14 @@ import ru.tinkoff.edu.java.scrapper.dto.model.Chat;
 import ru.tinkoff.edu.java.scrapper.dto.model.Link;
 import ru.tinkoff.edu.java.scrapper.dto.model.Subscription;
 
+import java.time.OffsetDateTime;
+
 @RequiredArgsConstructor
 public class ServicesTestHelper {
     private final static String ADD_CHAT_QUERY = "insert into chat (id) values (?)";
     private final static String ADD_LINK_QUERY = "insert into link (id, url) values (?, ?)";
+    private final static String ADD_LINK_ALL_FIELDS_QUERY =
+            "insert into link (id, url, last_check_time, last_update_time) values (?, ?, ?, ?)";
     private final static String ADD_SUBSCRIPTION_QUERY =
             "insert into subscription (chat_id, link_id) values (?, ?)";
     private final static String FIND_BY_ID_CHAT_QUERY =
@@ -34,6 +38,10 @@ public class ServicesTestHelper {
 
     public void addLink(Long id, String url) {
         template.update(ADD_LINK_QUERY, id, url);
+    }
+
+    public void addLink(Long id, String url, OffsetDateTime lastCheckTime, OffsetDateTime lastUpdateTime) {
+        template.update(ADD_LINK_ALL_FIELDS_QUERY, id, url, lastCheckTime, lastUpdateTime);
     }
 
     public void addSubscription(Long chatId, Long linkId) {

@@ -15,6 +15,5 @@ public class Link {
     private Long id;
     private String url;
     private OffsetDateTime lastCheckTime;
-    @Nullable
     private OffsetDateTime lastUpdateTime;
 }
