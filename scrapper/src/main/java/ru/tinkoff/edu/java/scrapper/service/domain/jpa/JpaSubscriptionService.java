@@ -33,15 +33,12 @@ public class JpaSubscriptionService implements SubscriptionService {
         }
         Optional<LinkEntity> linkEntityOptional = linkRepository.findLinkEntityByUrl(url.toString());
         LinkEntity linkEntity = linkEntityOptional.orElseGet(
-                () -> linkRepository.save(new LinkEntity(url.toString()))
+                () -> linkRepository.saveAndFlush(new LinkEntity(url.toString()))
         );
         if (subscriptionRepository.existsById(new SubscriptionPk(chatId, linkEntity.getId()))) {
             throw new IllegalArgumentException("Subscription already exist");
         }
-        subscriptionRepository.save(new SubscriptionEntity(chatId, linkEntity.getId()));
-        chatRepository.flush();
-        linkRepository.flush();
-        subscriptionRepository.flush();
+        subscriptionRepository.saveAndFlush(new SubscriptionEntity(chatId, linkEntity.getId()));
         return new Link(
                 linkEntity.getId(),
                 linkEntity.getUrl(),
@@ -66,7 +63,6 @@ public class JpaSubscriptionService implements SubscriptionService {
         if (subscriptionsCount == 0) {
             linkRepository.deleteById(linkEntity.getId());
         }
-        chatRepository.flush();
         linkRepository.flush();
         subscriptionRepository.flush();
         return new Link(
