@@ -20,11 +20,11 @@ import ru.tinkoff.edu.java.parser.ParserConfig;
 })
 public class ApplicationConfig {
     @NotNull
-    private String test;
-    @NotNull
     private Bot bot;
     @NotNull
     private Scrapper scrapper;
+    @NotNull
+    private ScrapperQueue scrapperQueue;
 
     @Validated
     @Data
@@ -40,5 +40,12 @@ public class ApplicationConfig {
     public static class Scrapper {
         @NotBlank
         private String url;
+    }
+
+    @Validated
+    @Data
+    public static class ScrapperQueue {
+        @NotBlank
+        private String name;
     }
 }

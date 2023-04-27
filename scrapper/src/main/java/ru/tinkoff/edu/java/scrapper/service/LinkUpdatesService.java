@@ -42,7 +42,6 @@ public class LinkUpdatesService {
             boolean shouldSendUpdate = updatesInfo != null &&
                     (link.getLastUpdateTime() == null ||
                             link.getLastUpdateTime().isBefore(updatesInfo.lastUpdateTime()));
-            shouldSendUpdate = true;
             if (shouldSendUpdate) {
                 sendUpdates(link, updatesInfo);
             }

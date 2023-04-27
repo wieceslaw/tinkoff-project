@@ -10,12 +10,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class RabbitMQConfiguration {
+public class RabbitMQConfig {
     private final String exchangeName;
     private final String queueName;
     private final String routingKey;
 
-    public RabbitMQConfiguration(ApplicationConfig config) {
+    public RabbitMQConfig(ApplicationConfig config) {
         this.exchangeName = config.getRabbitQueue().getExchangeName();
         this.queueName = config.getRabbitQueue().getQueueName();
         this.routingKey = config.getRabbitQueue().getRoutingKey();

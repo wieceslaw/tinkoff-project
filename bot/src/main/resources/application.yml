@@ -10,9 +10,17 @@ server:
   port: 8083
 
 app:
-  test: 42
   bot:
     name: "tinkoff-bot"
     token: ${BOT_TOKEN}
   scrapper:
     url: "http://localhost:8080"
+  scrapper-queue:
+      name: "updates.queue"
+
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: ${QUEUE_USERNAME}
+    password: ${QUEUE_PASSWORD}
