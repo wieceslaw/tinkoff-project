@@ -10,7 +10,7 @@ import ru.tinkoff.edu.java.bot.telegram.TrackerBot;
 
 @Slf4j
 @Component
-@RabbitListener(queues = "${app.scrapper-queue.name}")
+@RabbitListener(queues = "${app.rabbit-queue.queue-name}")
 @RequiredArgsConstructor
 public class ScrapperQueueListener {
     private final TrackerBot bot;

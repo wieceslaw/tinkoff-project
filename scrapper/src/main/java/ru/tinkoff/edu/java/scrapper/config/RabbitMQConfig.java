@@ -1,9 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.config;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +11,8 @@ public class RabbitMQConfig {
     private final String exchangeName;
     private final String queueName;
     private final String routingKey;
+
+    private final static String DLX_SUFFIX = ".dlq";
 
     public RabbitMQConfig(ApplicationConfig config) {
         this.exchangeName = config.getRabbitQueue().getExchangeName();
@@ -33,11 +32,18 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue queue() {
-        return new Queue(queueName);
+        return QueueBuilder
+                .durable(queueName)
+                .withArgument("x-dead-letter-exchange", exchangeName + DLX_SUFFIX)
+                .withArgument("x-dead-letter-routing-key", routingKey + DLX_SUFFIX)
+                .build();
     }
 
     @Bean
     public Binding binding(Queue queue, DirectExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(routingKey);
+        return BindingBuilder
+                .bind(queue)
+                .to(exchange)
+                .with(routingKey);
     }
 }

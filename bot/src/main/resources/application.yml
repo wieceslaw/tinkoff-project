@@ -15,8 +15,10 @@ app:
     token: ${BOT_TOKEN}
   scrapper:
     url: "http://localhost:8080"
-  scrapper-queue:
-      name: "updates.queue"
+  rabbit-queue:
+    exchange-name: updates
+    queue-name: updates.queue
+    routing-key: upd
 
 spring:
   rabbitmq:

@@ -24,7 +24,7 @@ public class ApplicationConfig {
     @NotNull
     private Scrapper scrapper;
     @NotNull
-    private ScrapperQueue scrapperQueue;
+    private RabbitQueue rabbitQueue;
 
     @Validated
     @Data
@@ -44,8 +44,12 @@ public class ApplicationConfig {
 
     @Validated
     @Data
-    public static class ScrapperQueue {
+    public static class RabbitQueue {
         @NotBlank
-        private String name;
+        private String queueName;
+        @NotBlank
+        private String exchangeName;
+        @NotBlank
+        private String routingKey;
     }
 }
