@@ -6,21 +6,30 @@ management:
   server:
     port: 8080
 
-
 app:
   scheduler:
     interval: 10000
-    link-to-be-checked-interval: 600000
+    link-to-be-checked-interval: 60000
   github:
     url: "https://api.github.com"
   stackoverflow:
     url: "https://api.stackexchange.com/2.3"
   bot:
     url: "http://localhost:8083"
-  databaseAccessType: "jpa"
+  databaseAccessType: jpa
+  use-queue: true
+  rabbit-queue:
+    exchange-name: updates
+    queue-name: updates.queue
+    routing-key: upd
 
 spring:
   datasource:
     url: ${DB_URL}
     password: ${DB_PASSWORD}
     username: ${DB_USERNAME}
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: ${QUEUE_USERNAME}
+    password: ${QUEUE_PASSWORD}
