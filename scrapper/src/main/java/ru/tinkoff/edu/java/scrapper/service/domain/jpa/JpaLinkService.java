@@ -26,11 +26,7 @@ public class JpaLinkService implements LinkService {
         return linkRepository.updateLastCheckedTimeAndGet(
                         OffsetDateTime.now().minusNanos(linkToBeCheckedInterval.toNanos())
                 ).stream()
-                .map(link -> new Link(
-                        link.getId(),
-                        link.getUrl(),
-                        link.getLastCheckTime(),
-                        link.getLastUpdateTime()))
+                .map(Link::new)
                 .toList();
     }
 

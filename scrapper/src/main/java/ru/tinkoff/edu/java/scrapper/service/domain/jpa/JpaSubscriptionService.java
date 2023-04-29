@@ -39,12 +39,7 @@ public class JpaSubscriptionService implements SubscriptionService {
             throw new IllegalArgumentException("Subscription already exist");
         }
         subscriptionRepository.saveAndFlush(new SubscriptionEntity(chatId, linkEntity.getId()));
-        return new Link(
-                linkEntity.getId(),
-                linkEntity.getUrl(),
-                linkEntity.getLastCheckTime(),
-                linkEntity.getLastUpdateTime()
-        );
+        return new Link(linkEntity);
     }
 
     @Override
@@ -65,12 +60,7 @@ public class JpaSubscriptionService implements SubscriptionService {
         }
         linkRepository.flush();
         subscriptionRepository.flush();
-        return new Link(
-                linkEntity.getId(),
-                linkEntity.getUrl(),
-                linkEntity.getLastCheckTime(),
-                linkEntity.getLastUpdateTime()
-        );
+        return new Link(linkEntity);
     }
 
     @Override
@@ -82,12 +72,7 @@ public class JpaSubscriptionService implements SubscriptionService {
         }
         ChatEntity chatEntity = chatEntityOptional.get();
         return chatEntity.getSubscriptions().stream()
-                .map(link -> new Link(
-                        link.getId(),
-                        link.getUrl(),
-                        link.getLastCheckTime(),
-                        link.getLastUpdateTime()
-                ))
+                .map(Link::new)
                 .toList();
     }
 
@@ -100,7 +85,7 @@ public class JpaSubscriptionService implements SubscriptionService {
         }
         LinkEntity linkEntity = linkEntityOptional.get();
         return linkEntity.getSubscribers().stream()
-                .map(chat -> new Chat(chat.getId()))
+                .map(Chat::new)
                 .toList();
     }
 }
