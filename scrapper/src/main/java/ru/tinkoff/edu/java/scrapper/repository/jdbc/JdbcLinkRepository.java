@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.dto.model.Link;
 
 import java.sql.PreparedStatement;
@@ -16,7 +15,6 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 @Slf4j
-@Repository
 @RequiredArgsConstructor
 public class JdbcLinkRepository {
     private final JdbcTemplate template;
