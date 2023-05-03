@@ -5,14 +5,18 @@ import org.springframework.amqp.support.converter.ClassMapper;
 import org.springframework.amqp.support.converter.DefaultClassMapper;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.tinkoff.edu.java.bot.dto.controller.LinkUpdateRequest;
+import ru.tinkoff.edu.java.bot.listener.ScrapperQueueListener;
+import ru.tinkoff.edu.java.bot.telegram.TrackerBot;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@ConditionalOnProperty(prefix = "app", name = "rabbit-queue")
 public class RabbitMQConfig {
     private final String exchangeName;
     private final String queueName;
@@ -61,5 +65,10 @@ public class RabbitMQConfig {
                 .bind(deadLetterQueue)
                 .to(deadLetterExchange)
                 .with(routingKey + DLQ_SUFFIX);
+    }
+
+    @Bean
+    public ScrapperQueueListener scrapperQueueListener(TrackerBot bot) {
+        return new ScrapperQueueListener(bot);
     }
 }

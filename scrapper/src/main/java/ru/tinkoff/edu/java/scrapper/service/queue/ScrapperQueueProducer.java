@@ -2,13 +2,12 @@ package ru.tinkoff.edu.java.scrapper.service.queue;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.scrapper.config.ApplicationConfig;
 import ru.tinkoff.edu.java.scrapper.dto.bot.LinkUpdateRequest;
+import ru.tinkoff.edu.java.scrapper.service.UpdatesSender;
 
 @Slf4j
-@Service
-public class ScrapperQueueProducer {
+public class ScrapperQueueProducer implements UpdatesSender {
     private final RabbitTemplate rabbitTemplate;
     private final String exchangeName;
     private final String routingKey;

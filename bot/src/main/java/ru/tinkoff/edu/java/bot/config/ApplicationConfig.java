@@ -23,7 +23,6 @@ public class ApplicationConfig {
     private Bot bot;
     @NotNull
     private Scrapper scrapper;
-    @NotNull
     private RabbitQueue rabbitQueue;
 
     @Validated
