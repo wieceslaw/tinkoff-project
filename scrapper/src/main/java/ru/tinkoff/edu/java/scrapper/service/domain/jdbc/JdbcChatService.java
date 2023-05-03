@@ -9,7 +9,6 @@ import ru.tinkoff.edu.java.scrapper.repository.jdbc.JdbcLinkRepository;
 import ru.tinkoff.edu.java.scrapper.service.domain.api.ChatService;
 
 @Slf4j
-//@Service
 @RequiredArgsConstructor
 public class JdbcChatService implements ChatService {
     private final JdbcChatRepository chatRepository;
