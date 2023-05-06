@@ -21,7 +21,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
+@SpringBootTest(properties = {"app.database-access-type=jdbc"})
+
 class JdbcLinkRepositoryTest extends IntegrationEnvironment {
     @Autowired
     private JdbcTemplate template;
