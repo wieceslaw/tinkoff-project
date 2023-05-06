@@ -1,6 +1,9 @@
 on:
   push:
-  pull_request:
+    paths-ignore:
+      - 'migrations/**'
+      - 'scrapper/**'
+      - 'scrapper-jooq/**'
 
 jobs:
   build:

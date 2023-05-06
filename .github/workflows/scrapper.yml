@@ -1,6 +1,7 @@
 on:
   push:
-  pull_request:
+    paths-ignore:
+      - 'bot/**'
 
 jobs:
   build:
@@ -16,6 +17,6 @@ jobs:
       - name: Build JOOQ
         run: mvn package -pl scrapper-jooq
       - name: Generate JOOQ
-        run: java -jar target/scrapper-jooq-1.0-SNAPSHOT.jar
+        run: java -jar target/scrapper-jooq-1.0-SNAPSHOT
       - name: Build
         run: mvn package -pl scrapper -am
