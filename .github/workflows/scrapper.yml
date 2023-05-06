@@ -21,6 +21,6 @@ jobs:
       - name: Show package
         run: ls -la target
       - name: Generate JOOQ
-        run: java -jar target/scrapper-jooq-1.0-SNAPSHOT
+        run: java -jar /scrapper-jooq/target/scrapper-jooq-1.0-SNAPSHOT.jar
       - name: Build
         run: mvn package -pl scrapper -am
