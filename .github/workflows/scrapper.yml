@@ -13,5 +13,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
+      - name: Build JOOQ
+        run: mvn package -pl scrapper-jooq
+      - name: Generate JOOQ
+        run: java -jar target/scrapper-jooq-1.0-SNAPSHOT.jar
       - name: Build
         run: mvn package -pl scrapper -am
