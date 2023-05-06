@@ -10,6 +10,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
+  IMAGE_NAME: scrapper-app:latest
 
 jobs:
   build:
@@ -29,7 +30,7 @@ jobs:
       - name: Build Jar
         run: mvn package -pl scrapper -am
       - name: Build Image
-        run: docker build -t ghcr.io/wieceslaw/scrapper-app:latest . -f scrapper/scrapper.Dockerfile
+        run: docker build -t ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }} . -f scrapper/scrapper.Dockerfile
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
@@ -37,4 +38,4 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push Docker image
-        run: docker push ghcr.io/wieceslaw/scrapper-app:latest
+        run: docker push ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}
