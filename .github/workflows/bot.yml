@@ -1,9 +1,10 @@
 on:
   push:
-    - 'bot/**'
-    - 'link-parser/**'
-    - 'pom.xml'
-    - '.github/workflows/bot.yml'
+    paths:
+      - 'bot/**'
+      - 'link-parser/**'
+      - 'pom.xml'
+      - '.github/workflows/bot.yml'
 
 jobs:
   build:

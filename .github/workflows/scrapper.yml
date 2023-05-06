@@ -1,11 +1,12 @@
 on:
   push:
-    - 'scrapper/**'
-    - 'scrapper-jooq/**'
-    - 'migrations'
-    - 'link-parser/**'
-    - 'pom.xml'
-    - '.github/workflows/scrapper.yml'
+    paths:
+      - 'scrapper/**'
+      - 'scrapper-jooq/**'
+      - 'migrations'
+      - 'link-parser/**'
+      - 'pom.xml'
+      - '.github/workflows/scrapper.yml'
 
 jobs:
   build:
