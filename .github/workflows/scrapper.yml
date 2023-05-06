@@ -23,5 +23,9 @@ jobs:
         run: mvn package -pl scrapper-jooq
       - name: Generate JOOQ
         run: java -jar scrapper-jooq/target/scrapper-jooq-1.0-SNAPSHOT.jar
+      - name: Build Jar
+        run: mvn package -pl scrapper -am
       - name: Build
         run: mvn package -pl scrapper -am
+      - name: Build Image
+        run: docker build -t wieceslaw/scrapper-app:latest . -f scrapper/scrapper.Dockerfile

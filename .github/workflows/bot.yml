@@ -17,5 +17,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-      - name: Build
+      - name: Build Jar
         run: mvn package -pl bot -am
+      - name: Build Image
+        run: docker build -t wieceslaw/bot-app:latest . -f bot/bot.Dockerfile
