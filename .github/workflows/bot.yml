@@ -1,9 +1,9 @@
 on:
   push:
-    paths-ignore:
-      - 'migrations/**'
-      - 'scrapper/**'
-      - 'scrapper-jooq/**'
+    - 'bot/**'
+    - 'link-parser/**'
+    - 'pom.xml'
+    - '.github/workflows/bot.yml'
 
 jobs:
   build:
