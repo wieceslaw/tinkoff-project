@@ -21,11 +21,7 @@ jobs:
           cache: maven
       - name: Build JOOQ
         run: mvn package -pl scrapper-jooq
-      - name: Show
-        run: ls -la scrapper-jooq
-      - name: Show
-        run: ls -la scrapper-jooq/target
       - name: Generate JOOQ
-        run: java -jar /scrapper-jooq/target/scrapper-jooq-1.0-SNAPSHOT
+        run: java -jar scrapper-jooq/target/scrapper-jooq-1.0-SNAPSHOT
       - name: Build
         run: mvn package -pl scrapper -am
