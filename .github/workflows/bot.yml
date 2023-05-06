@@ -6,6 +6,9 @@ on:
       - 'pom.xml'
       - '.github/workflows/bot.yml'
 
+env:
+  REGISTRY: ghcr.io
+
 jobs:
   build:
     runs-on: ubuntu-latest
