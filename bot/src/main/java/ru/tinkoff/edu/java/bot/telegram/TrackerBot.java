@@ -1,6 +1,7 @@
 package ru.tinkoff.edu.java.bot.telegram;
 
 import jakarta.annotation.PostConstruct;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -15,7 +16,6 @@ import ru.tinkoff.edu.java.bot.dto.controller.LinkUpdateRequest;
 import ru.tinkoff.edu.java.bot.exception.SendingMessageException;
 import ru.tinkoff.edu.java.bot.telegram.command.AbstractPublicCommand;
 
-import java.util.List;
 
 @Slf4j
 @Component
@@ -55,8 +55,10 @@ public class TrackerBot extends TelegramLongPollingBot {
                 sendMessage = messageHandler.handle(message);
             } catch (RuntimeException ex) {
                 log.error(ex.toString());
-                sendMessage = new SendMessage(message.getChatId().toString(),
-                        "Sorry, internal error happened");
+                sendMessage = new SendMessage(
+                        message.getChatId().toString(),
+                        "Sorry, internal error happened"
+                );
             }
             try {
                 execute(sendMessage);

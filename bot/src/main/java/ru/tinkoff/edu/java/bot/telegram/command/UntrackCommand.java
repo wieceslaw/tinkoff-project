@@ -1,6 +1,8 @@
 package ru.tinkoff.edu.java.bot.telegram.command;
 
 import jakarta.validation.constraints.NotNull;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -10,9 +12,6 @@ import ru.tinkoff.edu.java.bot.exception.LinkIsNotTrackingException;
 import ru.tinkoff.edu.java.bot.service.ScrapperWebService;
 import ru.tinkoff.edu.java.parser.data.LinkData;
 import ru.tinkoff.edu.java.parser.handler.LinkHandlerChain;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Order(5)
 @Slf4j

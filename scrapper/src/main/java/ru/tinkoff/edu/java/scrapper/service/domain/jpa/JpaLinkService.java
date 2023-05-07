@@ -1,5 +1,9 @@
 package ru.tinkoff.edu.java.scrapper.service.domain.jpa;
 
+import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,11 +12,6 @@ import ru.tinkoff.edu.java.scrapper.dto.model.Link;
 import ru.tinkoff.edu.java.scrapper.exception.InternalError;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaLinkRepository;
 import ru.tinkoff.edu.java.scrapper.service.domain.api.LinkService;
-
-import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
