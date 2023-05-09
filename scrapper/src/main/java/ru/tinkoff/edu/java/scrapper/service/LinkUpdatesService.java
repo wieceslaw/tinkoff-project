@@ -38,8 +38,8 @@ public class LinkUpdatesService {
         uncheckedLinks.forEach(link -> {
             UpdatesInfo updatesInfo = fetchUpdates(link);
             boolean shouldSendUpdate = updatesInfo != null
-                    && (link.getLastUpdateTime() == null
-                    || link.getLastUpdateTime().isBefore(updatesInfo.lastUpdateTime()));
+                && (link.getLastUpdateTime() == null
+                || link.getLastUpdateTime().isBefore(updatesInfo.lastUpdateTime()));
             if (shouldSendUpdate) {
                 sendUpdates(link, updatesInfo);
             }
@@ -48,7 +48,7 @@ public class LinkUpdatesService {
 
     private List<Link> getUncheckedLinks() {
         return linkService.updateLastCheckedTimeAndGet(
-                config.getScheduler().getLinkToBeCheckedInterval()
+            config.getScheduler().getLinkToBeCheckedInterval()
         );
     }
 
@@ -57,7 +57,7 @@ public class LinkUpdatesService {
         return switch (linkData) {
             case null -> throw new InternalError("Malicious link");
             case GitHubLinkData data ->
-                    gitHubWebService.fetchEventsUpdates(data.owner(), data.repo(), link.getLastUpdateTime());
+                gitHubWebService.fetchEventsUpdates(data.owner(), data.repo(), link.getLastUpdateTime());
             case StackOverflowLinkData data -> stackOverflowWebService.fetchQuestionUpdates(data.questionId());
         };
     }
@@ -66,10 +66,10 @@ public class LinkUpdatesService {
         log.info("Sending updates");
         linkService.updateLinkLastUpdateTime(link.getId(), updatesInfo.lastUpdateTime());
         updatesSendingService.sendUpdate(new LinkUpdateRequest(
-                link.getId(),
-                link.getUrl(),
-                Strings.join(updatesInfo.updates(), '\n'),
-                subscriptionService.getChatsIds(link.getId())
+            link.getId(),
+            link.getUrl(),
+            Strings.join(updatesInfo.updates(), '\n'),
+            subscriptionService.getChatsIds(link.getId())
         ));
     }
 }

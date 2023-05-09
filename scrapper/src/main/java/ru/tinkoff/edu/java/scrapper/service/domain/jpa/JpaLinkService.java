@@ -23,10 +23,10 @@ public class JpaLinkService implements LinkService {
     public List<Link> updateLastCheckedTimeAndGet(Duration linkToBeCheckedInterval) {
         log.info(OffsetDateTime.now().minusNanos(linkToBeCheckedInterval.toNanos()).toString());
         return linkRepository.updateLastCheckedTimeAndGet(
-                        OffsetDateTime.now().minusNanos(linkToBeCheckedInterval.toNanos())
-                ).stream()
-                .map(Link::new)
-                .toList();
+                OffsetDateTime.now().minusNanos(linkToBeCheckedInterval.toNanos())
+            ).stream()
+            .map(Link::new)
+            .toList();
     }
 
     @Override

@@ -1,5 +1,8 @@
 package ru.tinkoff.edu.java.scrapper.repository;
 
+import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,11 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.IntegrationEnvironment;
 import ru.tinkoff.edu.java.scrapper.dto.model.Chat;
 import ru.tinkoff.edu.java.scrapper.repository.jdbc.JdbcChatRepository;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(properties = {"app.database-access-type=jdbc"})
 class JdbcChatRepositoryTest extends IntegrationEnvironment {

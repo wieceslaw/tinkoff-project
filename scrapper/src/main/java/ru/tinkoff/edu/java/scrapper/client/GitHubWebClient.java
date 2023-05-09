@@ -9,13 +9,13 @@ import reactor.core.publisher.Mono;
 import ru.tinkoff.edu.java.scrapper.dto.client.GitHubEventResponse;
 
 @HttpExchange(
-        accept = MediaType.APPLICATION_JSON_VALUE,
-        contentType = MediaType.APPLICATION_JSON_VALUE
+    accept = MediaType.APPLICATION_JSON_VALUE,
+    contentType = MediaType.APPLICATION_JSON_VALUE
 )
 public interface GitHubWebClient {
     @GetExchange("/repos/{owner}/{repo}/events")
     Mono<List<GitHubEventResponse>> fetchEvents(
-            @PathVariable("owner") String owner,
-            @PathVariable("repo") String repo
+        @PathVariable("owner") String owner,
+        @PathVariable("repo") String repo
     );
 }

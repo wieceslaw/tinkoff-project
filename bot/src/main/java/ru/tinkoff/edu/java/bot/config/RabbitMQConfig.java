@@ -58,16 +58,16 @@ public class RabbitMQConfig {
     @Bean
     public Queue deadLetterQueue() {
         return QueueBuilder
-                .durable(queueName + DLQ_SUFFIX)
-                .build();
+            .durable(queueName + DLQ_SUFFIX)
+            .build();
     }
 
     @Bean
     public Binding deadLetterbinding(Queue deadLetterQueue, DirectExchange deadLetterExchange) {
         return BindingBuilder
-                .bind(deadLetterQueue)
-                .to(deadLetterExchange)
-                .with(routingKey + DLQ_SUFFIX);
+            .bind(deadLetterQueue)
+            .to(deadLetterExchange)
+            .with(routingKey + DLQ_SUFFIX);
     }
 
     @Bean

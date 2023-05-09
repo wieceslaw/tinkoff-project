@@ -22,10 +22,10 @@ public class GitHubWebService {
         if (!events.isEmpty()) {
             GitHubEventResponse lastEvent = events.get(0);
             List<String> eventsInfo = events
-                    .stream()
-                    .filter(event -> event.getCreatedAt().isAfter(lastUpdateTimeSaved))
-                    .map(event -> getEventTypeDescription(event.getType()) + " at " + event.getCreatedAt())
-                    .toList();
+                .stream()
+                .filter(event -> event.getCreatedAt().isAfter(lastUpdateTimeSaved))
+                .map(event -> getEventTypeDescription(event.getType()) + " at " + event.getCreatedAt())
+                .toList();
             return new UpdatesInfo(lastEvent.getCreatedAt(), eventsInfo);
         }
         return null;

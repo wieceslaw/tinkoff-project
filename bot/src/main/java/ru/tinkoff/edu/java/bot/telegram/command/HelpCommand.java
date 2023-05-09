@@ -20,15 +20,17 @@ public class HelpCommand extends AbstractPublicCommand {
     public HelpCommand(@Lazy List<AbstractPublicCommand> publicCommands) {
         super(COMMAND, DESCRIPTION);
         commandsDescription = publicCommands
-                .stream()
-                .map(c -> c.getCommand() + ": " + c.getDescription())
-                .toList();
+            .stream()
+            .map(c -> c.getCommand() + ": " + c.getDescription())
+            .toList();
     }
 
     @Override
     public SendMessage handle(@NotNull Message message) {
-        return new SendMessage(message.getChatId().toString(),
-                "Commands description: \n" + Strings.join(commandsDescription, '\n'));
+        return new SendMessage(
+            message.getChatId().toString(),
+            "Commands description: \n" + Strings.join(commandsDescription, '\n')
+        );
     }
 
     @Override

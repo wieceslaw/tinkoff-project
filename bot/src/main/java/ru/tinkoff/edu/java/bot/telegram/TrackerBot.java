@@ -16,7 +16,6 @@ import ru.tinkoff.edu.java.bot.dto.controller.LinkUpdateRequest;
 import ru.tinkoff.edu.java.bot.exception.SendingMessageException;
 import ru.tinkoff.edu.java.bot.telegram.command.AbstractPublicCommand;
 
-
 @Slf4j
 @Component
 public class TrackerBot extends TelegramLongPollingBot {
@@ -34,9 +33,9 @@ public class TrackerBot extends TelegramLongPollingBot {
     @PostConstruct
     private void init() {
         List<BotCommand> botCommands = commands
-                .stream()
-                .map(AbstractPublicCommand::toBotCommand)
-                .toList();
+            .stream()
+            .map(AbstractPublicCommand::toBotCommand)
+            .toList();
         SetMyCommands setMyCommands = new SetMyCommands();
         setMyCommands.setCommands(botCommands);
         try {
@@ -56,8 +55,8 @@ public class TrackerBot extends TelegramLongPollingBot {
             } catch (RuntimeException ex) {
                 log.error(ex.toString());
                 sendMessage = new SendMessage(
-                        message.getChatId().toString(),
-                        "Sorry, internal error happened"
+                    message.getChatId().toString(),
+                    "Sorry, internal error happened"
                 );
             }
             try {
@@ -81,9 +80,9 @@ public class TrackerBot extends TelegramLongPollingBot {
     private void sendMessage(Long chatId, String text) {
         try {
             SendMessage sendMessage = SendMessage.builder()
-                    .chatId(chatId)
-                    .text(text)
-                    .build();
+                .chatId(chatId)
+                .text(text)
+                .build();
             this.execute(sendMessage);
         } catch (TelegramApiException e) {
             throw new SendingMessageException(chatId, e);

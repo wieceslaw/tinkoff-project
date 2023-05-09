@@ -20,7 +20,7 @@ public class ListCommand extends AbstractPublicCommand {
     private static final String COMMAND = "/list";
     private static final String DESCRIPTION = "show a list of tracked links";
     private static final String EMPTY_LINKS_LIST_MESSAGE =
-            "You don't have tracked links yet, use /track <link> to track one";
+        "You don't have tracked links yet, use /track <link> to track one";
 
     public ListCommand(ScrapperWebService webService) {
         super(COMMAND, DESCRIPTION);
@@ -41,14 +41,14 @@ public class ListCommand extends AbstractPublicCommand {
 
     private String getFormattedText(ListLinksResponse response) {
         List<String> links = response
-                .links()
-                .stream()
-                .map(LinkResponse::link)
-                .map(URI::toString)
-                .toList();
+            .links()
+            .stream()
+            .map(LinkResponse::link)
+            .map(URI::toString)
+            .toList();
         return "List of your current tracked links: \n" + links
-                .stream()
-                .map(link -> "- " + link)
-                .collect(Collectors.joining("\n"));
+            .stream()
+            .map(link -> "- " + link)
+            .collect(Collectors.joining("\n"));
     }
 }

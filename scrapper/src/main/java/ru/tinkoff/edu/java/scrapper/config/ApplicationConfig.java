@@ -11,7 +11,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.validation.annotation.Validated;
 import ru.tinkoff.edu.java.parser.ParserConfig;
 
-
 @EnableScheduling
 @Validated
 @Data

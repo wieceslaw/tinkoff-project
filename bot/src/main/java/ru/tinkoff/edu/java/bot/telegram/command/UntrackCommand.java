@@ -26,9 +26,9 @@ public class UntrackCommand extends AbstractPublicCommand {
     private static final String SUCCESS_RESPONSE = "Removed link from your tacking list";
     private static final String WRONG_FORMAT_RESPONSE = "Use correct format: '\\untrack <link>'";
     private static final String WRONG_LINK_FORMAT_RESPONSE =
-            "You can only use correct GitHub links for repos and StackOverflow links for questions";
+        "You can only use correct GitHub links for repos and StackOverflow links for questions";
     private static final String LINK_IS_NOT_TRACKING_RESPONSE =
-            "You cannot cancel tracking of a link that you are not tracking";
+        "You cannot cancel tracking of a link that you are not tracking";
 
     public UntrackCommand(ScrapperWebService webService, LinkHandlerChain linkHandler) {
         super(COMMAND, DESCRIPTION);

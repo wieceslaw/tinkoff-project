@@ -36,7 +36,7 @@ public class JpaSubscriptionService implements SubscriptionService {
         }
         Optional<LinkEntity> linkEntityOptional = linkRepository.findLinkEntityByUrl(url.toString());
         LinkEntity linkEntity = linkEntityOptional.orElseGet(
-                () -> linkRepository.saveAndFlush(new LinkEntity(url.toString()))
+            () -> linkRepository.saveAndFlush(new LinkEntity(url.toString()))
         );
         if (subscriptionRepository.existsById(new SubscriptionPk(chatId, linkEntity.getId()))) {
             throw new IllegalArgumentException(SUBSCRIPTION_ALREADY_EXIST_MESSAGE);
@@ -75,8 +75,8 @@ public class JpaSubscriptionService implements SubscriptionService {
         }
         ChatEntity chatEntity = chatEntityOptional.get();
         return chatEntity.getSubscriptions().stream()
-                .map(Link::new)
-                .toList();
+            .map(Link::new)
+            .toList();
     }
 
     @Override
@@ -88,7 +88,7 @@ public class JpaSubscriptionService implements SubscriptionService {
         }
         LinkEntity linkEntity = linkEntityOptional.get();
         return linkEntity.getSubscribers().stream()
-                .map(Chat::new)
-                .toList();
+            .map(Chat::new)
+            .toList();
     }
 }

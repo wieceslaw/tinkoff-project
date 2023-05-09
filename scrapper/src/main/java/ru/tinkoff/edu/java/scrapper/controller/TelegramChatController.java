@@ -17,7 +17,7 @@ public class TelegramChatController {
     private final ChatService chatService;
 
     @PostMapping(
-            path = "/{id}"
+        path = "/{id}"
     )
     public void create(@PathVariable("id") Long id) {
 
@@ -25,7 +25,7 @@ public class TelegramChatController {
     }
 
     @DeleteMapping(
-            path = "/{id}"
+        path = "/{id}"
     )
     public void delete(@PathVariable("id") Long id) {
         chatService.unregister(id);

@@ -18,7 +18,7 @@ public class StartCommand implements Command {
     private static final String COMMAND = "/start";
     private static final String WELCOME_MESSAGE_RESPONSE = "Hello!";
     private static final String CHAT_ALREADY_REGISTERED_RESPONSE =
-            "You have already started the conversation, no need to use it again";
+        "You have already started the conversation, no need to use it again";
 
     @Override
     public SendMessage handle(@NotNull Message message) {

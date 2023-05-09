@@ -24,13 +24,13 @@ import lombok.Setter;
 public class LinkEntity {
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "linkIdSeq"
+        strategy = GenerationType.SEQUENCE,
+        generator = "linkIdSeq"
     )
     @SequenceGenerator(
-            name = "linkIdSeq",
-            sequenceName = "link_id_seq",
-            allocationSize = 1
+        name = "linkIdSeq",
+        sequenceName = "link_id_seq",
+        allocationSize = 1
     )
     private Long id;
 
@@ -45,9 +45,9 @@ public class LinkEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "subscription",
-            joinColumns = @JoinColumn(name = "link_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "id")
+        name = "subscription",
+        joinColumns = @JoinColumn(name = "link_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "id")
     )
     private List<ChatEntity> subscribers;
 

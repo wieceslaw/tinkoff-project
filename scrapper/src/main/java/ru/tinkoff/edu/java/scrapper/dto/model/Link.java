@@ -1,6 +1,5 @@
 package ru.tinkoff.edu.java.scrapper.dto.model;
 
-
 import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;

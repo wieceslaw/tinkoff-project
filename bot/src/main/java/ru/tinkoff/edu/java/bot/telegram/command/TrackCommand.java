@@ -26,7 +26,7 @@ public class TrackCommand extends AbstractPublicCommand {
     private static final String SUCCESS_RESPONSE = "Added link to your tacking list";
     private static final String WRONG_FORMAT_RESPONSE = "Use correct format: '\\track <link>'";
     private static final String WRONG_LINK_FORMAT_RESPONSE =
-            "You can only use correct GitHub links for repos and StackOverflow links for questions";
+        "You can only use correct GitHub links for repos and StackOverflow links for questions";
     private static final String LINK_IS_ALREADY_TRACKING_RESPONSE = "You are already tracking this link";
 
     public TrackCommand(ScrapperWebService webService, LinkHandlerChain linkHandler) {

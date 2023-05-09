@@ -16,8 +16,8 @@ public interface SubscriptionService {
 
     default List<Long> getChatsIds(Long linkId) {
         return getLinkSubscribers(linkId)
-                .stream()
-                .map(Chat::getId)
-                .toList();
+            .stream()
+            .map(Chat::getId)
+            .toList();
     }
 }
