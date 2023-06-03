@@ -13,4 +13,3 @@ Telegram bot for tracking GitHub repository or StackOverflow question activity
 - CD/CI: GitHub Actions
 - Monitoring: Spring Actuator, Grafana, Prometheus
 - Other: Swagger, Checkstyle, GitHub API, StackOverflow API
-- 
